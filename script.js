@@ -97,6 +97,12 @@ document.getElementById("Go-Github").onclick = function() {
 
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("Go-Github").onclick = function() {
-        window.location.href = "https://github.com";
+        window.location.href = "https://github.com/StarsailsClover/LightSearch";
+    };
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("Github-ISS").onclick = function() {
+        window.location.href = "https://github.com/StarsailsClover/LightSearch/issues";
     };
 });
