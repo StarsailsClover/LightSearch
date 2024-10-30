@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="icon.png" type="image/png">
+    <title>LightSearch - 轻搜（聚合搜索引擎）</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Hi,欢迎来到轻搜👋</h1>
+        <input type="text" id="search-input" placeholder="请输入搜索内容" />
+        <button id="search-button">Search</button>
+        <button id="settings-button-top" class="settings-button">设置</button>
+    </div>
+    
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="close-button">&times;</span>
+            <h2>小Tip💡</h2>
+            <p>在首次使用时，浏览器会拦截大量弹出式的窗口。在进行搜索后，请点击“始终允许该网站弹出式网页”。</p>
+            <button id="settings-button">打开设置</button>
+        </div>
+    </div>
+
+    <div id="settings" class="settings">
+        <div class="settings-sidebar">
+            <h2>设置</h2>
+            <div>
+                <h3>搜索引擎设置</h3>
+                <ul id="engine-list"></ul>
+                <input type="text" id="new-engine" placeholder="添加搜索引擎" />
+                <button id="add-engine">添加</button>
+            </div>
+            <div>
+                <h3>主题</h3>
+                <button id="toggle-theme">切换深/浅色</button>
+            <div>
+            <div>
+                <h3>设置图片背景</h3>
+                <input type="file" id="background-upload" accept="image/*" style="margin-top: 10px;" />
+            </div>
+            <div>
+                <h3>项目Github主页</h3>
+                <p>（点击后会在该页直接跳转Github）</p>
+                <button id="Go-Github">Github</button>
+            </div>
+            
+        </div>
+        <span class="settings-close">&times;</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
