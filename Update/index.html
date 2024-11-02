@@ -13,26 +13,27 @@
         <input type="text" id="search-input" placeholder="请输入搜索内容" />
         <button id="search-button">Search</button>
         <button id="settings-button-top" class="settings-button">设置</button>
-        <a href="https://starsailsclover.github.io/LightSearch/AcademicSearch" target="_blank">
-            <button id="AS-button-top" class="AS-button">学术搜索</button>
-        </a>
-        <a href="https://starsailsclover.github.io/LightSearch/AcademicSearch" target="_blank">
-            <button id="UpD-button-top" class="UpD-button">查看更新</button>
-        </a>
+       <a href="https://starsailsclover.github.io/LightSearch/AcademicSearch" target="_blank">
+    <button id="AS-button-top" class="AS-button">学术搜索</button>
+</a>
     </div>
     
     <div id="popup" class="popup">
         <div class="popup-content">
             <span class="close-button">&times;</span>
-            <h2>小Tip💡</h2>
-            <p>在首次使用时，浏览器会拦截大量弹出式的窗口。在进行搜索后，请点击“始终允许该网站弹出式网页（我们比较推荐先看我们的Github项目主页，知道怎么用再使用）”。</p>
-            <button id="settings-button">打开设置</button>
+            <h2>版本更新至v 0.0.4🎉</h2>
+            <p>本次更新更新了以下内容：<br>
+                1. 深色模式增强：加强了深色模式下文字的显示和按钮的变化；<br>
+                2. CSS片段增强：我们新增了很多的CSS片段，还加强了动画；<br>
+                3. 增加“学术搜索”入口，将在后续版本中投入使用。
+                4. 优化了部分页面样式，使其更加美观。
+                6. 优化了部分页面的加载速度，使其更加流畅。
+                7. 增加了更新详情页，以方便用户了解更新情况。
+                8. 新增了一个按钮，方便回看提示弹窗
+                9. 修复了部分Bug。
+            </p>
+        <button id="closePopup" onclick="location.href='https://starsailsclover.github.io/LightSearch'">确认</button>
         </div>
-    </div>
-
-    <!-- 页面其他内容 -->
-    <div class="main-content">
-        <button id="open-popup-UpD">遇到问题了？</button>
     </div>
 
     <div id="settings" class="settings">
@@ -47,11 +48,10 @@
             <div>
                 <h3>主题</h3>
                 <button id="toggle-theme">切换深/浅色</button>
-            </div>
+            <div>
             <div>
                 <h3>设置图片背景</h3>
                 <input type="file" id="background-upload" accept="image/*" style="margin-top: 10px;" />
-                <button id="clear-background">清空背景图片</button>
             </div>
             <div>
                 <h3>项目Github主页</h3>
@@ -63,6 +63,7 @@
                 <p>（点击后会在该页直接跳转Github）</p>
                 <button id="Github-ISS">Github</button>
             </div>
+            
         </div>
         <span class="settings-close">&times;</span>
     </div>

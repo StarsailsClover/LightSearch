@@ -34,7 +34,7 @@ body {
     outline: none;
     font-size: 1.2em;
     margin-right: 10px;
-    animation: fadeIn 1s ease-in-out;
+    animation: slideInFromLeft 1s ease-in-out;
 }
 
 /* 设置搜索按钮的样式，包括内边距、边框、圆角、背景色、文字颜色、字体大小、鼠标悬停效果等 */
@@ -215,7 +215,7 @@ body {
 .AS-button {
     position: fixed;
     top: 20px;
-    right: 85px; /* 调整这里 */
+    right: 90px; /* 调整这里 */
     padding: 10px 15px;
     background-color: #4285f4;
     color: white;
@@ -229,27 +229,6 @@ body {
 
 /* 设置学术按钮悬停时的背景颜色 */
 .AS-button:hover {
-    background-color: #357ae8;
-}
-
-/* 设置更新按钮的样式，包括固定位置、背景色、文字颜色、边框、圆角、鼠标悬停效果等 */
-.UpD-button {
-    position: fixed;
-    top: 20px;
-    right: 175px; /* 调整这里 */
-    padding: 10px 15px;
-    background-color: #4285f4;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    z-index: 1000;
-    animation: fadeIn 1s ease-in-out;
-}
-
-/* 设置更新按钮悬停时的背景颜色 */
-.UpD-button:hover {
     background-color: #357ae8;
 }
 
@@ -344,15 +323,4 @@ body.theme-dark button:hover {
         transform: translateX(0);
         opacity: 1;
     }
-}
-
-/* styles.css */
-[data-theme="light"] {
-    background-color: white;
-    color: black;
-}
-
-[data-theme="dark"] {
-    background-color: black;
-    color: white;
 }
