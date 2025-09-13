@@ -1,72 +1,98 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN" class="theme-light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LightSearch</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="icon.png" type="image/png">
-    <title>LightSearch - 轻搜（聚合搜索引擎）</title>
+    <!-- 版权声明（GPLv3要求） -->
+    <meta name="copyright" content="Copyright (C) 2025 LightSearch Developers">
+    <meta name="license" content="GNU General Public License v3.0">
 </head>
 <body>
-    <div class="container">
-        <h1 class="title">Hi,欢迎来到轻搜👋</h1>
-        <input type="text" id="search-input" placeholder="请输入搜索内容" />
-        <button id="search-button">Search</button>
-        <button id="settings-button-top" class="settings-button">设置</button>
-        <a href="https://starsailsclover.github.io/LightSearch/AcademicSearch" target="_blank">
-            <button id="AS-button-top" class="AS-button">学术搜索</button>
-        </a>
-        <a href="https://ocn4h8vq6j0m.feishu.cn/wiki/ZAdjwtyxQiW7DkkxHnEc3SvBnic#doxcn2HKJgpTtqBvgpEiXmDdQff" target="_blank">
-            <button id="UpD-button-top" class="UpD-button">查看更新</button>
-        </a>
-    </div>
-    
+    <!-- 初始引导弹窗 -->
     <div id="popup" class="popup">
         <div class="popup-content">
             <span class="close-button">&times;</span>
-            <h2>小Tip💡</h2>
-            <p>在首次使用时，浏览器会拦截大量弹出式的窗口。在进行搜索后，请点击“始终允许该网站弹出式网页（我们比较推荐先看我们的Github项目主页，知道怎么用再使用）”。</p>
-            <button id="settings-button">打开设置</button>
+            <h2>欢迎使用LightSearch</h2>
+            <p>支持多引擎同时搜索，可自定义添加搜索引擎</p>
+            <p>使用{query}作为搜索关键词占位符（例：https://example.com/search?q={query}）</p>
         </div>
     </div>
 
-    <!-- 页面其他内容 -->
-    <div class="main-content">
-        <button id="open-popup-UpD">遇到问题了？</button>
+    <!-- 主搜索区 -->
+    <div class="search-container">
+        <h1>LightSearch</h1>
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="输入搜索内容...">
+            <button id="search-button">搜索</button>
+        </div>
+        <div class="search-history" id="search-history"></div> <!-- 搜索历史展示区 -->
     </div>
 
+    <!-- 功能按钮区 -->
+    <div class="control-buttons">
+        <button id="settings-button">设置</button>
+        <button class="AS-button" onclick="window.location.href='AcademicSearch/'">学术搜索</button>
+        <button class="UpD-button" id="open-popup-UpD">问题反馈</button>
+    </div>
+
+    <!-- 设置面板 -->
     <div id="settings" class="settings">
         <div class="settings-sidebar">
             <h2>设置</h2>
+            <!-- 搜索引擎管理 -->
             <div>
-                <h3>搜索引擎设置</h3>
+                <h3>搜索引擎</h3>
                 <ul id="engine-list"></ul>
-                <input type="text" id="new-engine" placeholder="添加搜索引擎" />
+                <input type="text" id="new-engine" placeholder="添加引擎（含{query}）">
                 <button id="add-engine">添加</button>
             </div>
+            
+            <!-- 主题设置 -->
             <div>
                 <h3>主题</h3>
                 <button id="toggle-theme">切换深/浅色</button>
+                <select id="theme-preset">
+                    <option value="system">跟随系统</option>
+                    <option value="light">极简白</option>
+                    <option value="dark">深夜黑</option>
+                    <option value="green">护眼绿</option>
+                </select>
             </div>
+            
+            <!-- 背景设置 -->
             <div>
-                <h3>设置图片背景</h3>
-                <input type="file" id="background-upload" accept="image/*" style="margin-top: 10px;" />
-                <button id="clear-background">清空背景图片</button>
+                <h3>背景设置</h3>
+                <input type="file" id="background-upload" accept="image/*">
+                <button id="clear-background">清空背景</button>
+                <div>
+                    <label>模糊度：</label>
+                    <input type="range" id="bg-blur" min="0" max="20" value="0">
+                </div>
             </div>
+            
+            <!-- 关于与反馈 -->
             <div>
-                <h3>项目Github主页</h3>
-                <p>（点击后会在该页直接跳转Github）</p>
-                <button id="Go-Github">Github</button>
-            </div>
-            <div>
-                <h3>提交建议以及问题</h3>
-                <p>（点击后会在该页直接跳转Github）</p>
-                <button id="Github-ISS">Github</button>
+                <h3>关于项目</h3>
+                <p>本项目基于GPLv3协议开源</p>
+                <button id="Go-Github">Github主页</button>
+                <button id="Github-ISS">提交问题</button>
             </div>
         </div>
         <span class="settings-close">&times;</span>
     </div>
 
+    <!-- 问题反馈弹窗 -->
+    <div id="popup_UpD" class="popup_UpD">
+        <div class="popup-content">
+            <span class="close-button" id="close-popup-UpD">&times;</span>
+            <h3>问题反馈</h3>
+            <p>请前往Github Issues提交详细问题描述</p>
+        </div>
+    </div>
+
+    <script src="utils.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
