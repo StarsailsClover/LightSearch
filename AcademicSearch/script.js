@@ -1,6 +1,6 @@
 /*
 LightSearch - 学术搜索模块
-Copyright (C) 2023 开发者团队
+Copyright (C) 2025 Sails
 
 本程序是自由软件：你可以根据GNU通用公共许可证第3版（或任何更新版本）的条款
 重新分发和/或修改它。
@@ -135,3 +135,4 @@ function initEventListeners() {
         window.open('https://github.com/StarsailsClover/LightSearch/issues', '_blank');
     });
 }
+
