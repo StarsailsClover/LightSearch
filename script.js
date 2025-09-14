@@ -1,284 +1,172 @@
-document.getElementById('search-input').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-        performSearch();
-    }
+/*
+LightSearch - 多引擎搜索工具
+Copyright (C) 2025 Sails
+
+本程序是自由软件：你可以根据GNU通用公共许可证第3版（或任何更新版本）的条款
+重新分发和/或修改它。
+
+本程序的分发是希望它能有用，但没有任何保证；甚至没有隐含的适销性或特定用途的保证。
+详见GNU通用公共许可证。
+
+你应该已经收到了GNU通用公共许可证的副本。如果没有，请参见<https://www.gnu.org/licenses/>。
+*/
+
+import { storage, themeUtils, historyUtils } from './utils.js';
+
+// 初始化
+document.addEventListener('DOMContentLoaded', () => {
+    initSearchEngines();
+    themeUtils.init();
+    historyUtils.render('search-history');
+    loadBackground();
+    initEventListeners();
 });
 
-window.addEventListener('DOMContentLoaded', () => {
-    // 应用深色/浅色模式
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-
-    // 应用上传的图片背景
-    const savedBackground = localStorage.getItem('background-image');
-    if (savedBackground) {
-        document.body.style.backgroundImage = `url(${savedBackground})`;
-        document.body.style.backgroundSize = 'cover'; // 可选：让背景图覆盖整个页面
-    }
-
-    // 清空背景图片
-document.getElementById('clear-background').addEventListener('click', () => {
-    // 清除背景图片
-    document.body.style.backgroundImage = '';
-    document.body.style.backgroundSize = ''; // 可选：清除背景图片大小设置
-
-    // 从 localStorage 中移除背景图片
-    localStorage.removeItem('background-image');
-
-    // 重置文件输入框
-    document.getElementById('background-upload').value = '';
-});
-
-    // 应用添加的APIs
-    const savedEngines = JSON.parse(localStorage.getItem('engines')) || [];
-    updateEngineList(savedEngines);
-
-    // 检查是否首次访问
-    const firstVisit = localStorage.getItem('firstVisit') === 'true';
-    if (firstVisit) {
-        showPopup();
-    }
-});
-
-// 保存是否首次访问
-if (!localStorage.getItem('firstVisit')) {
-    localStorage.setItem('firstVisit', 'true');
-} else {
-    localStorage.setItem('firstVisit', 'false');
+// 初始化搜索引擎列表
+function initSearchEngines() {
+    const engines = storage.get('engines') || [
+        'https://www.baidu.com/s?ie=utf-8&word={query}',
+        'https://www.bing.com/search?q={query}',
+        'https://www.google.com/search?q={query}'
+    ];
+    renderEngineList(engines);
+    storage.set('engines', engines);
 }
 
-function showPopup() {
-    const popup = document.getElementById('popup');
-    popup.style.display = 'block';
-
-    document.querySelector('.close-button').addEventListener('click', () => {
-        popup.style.display = 'none';
-    });
-}
-
-document.getElementById('search-button').addEventListener('click', performSearch);
-
-function performSearch() {
-    const query = document.getElementById('search-input').value.trim(); // 获取用户输入
-    if (query) {
-        const urls = [
-            `https://www.baidu.com/s?ie=utf-8&word=${encodeURIComponent(query)}`,
-            `https://www.bing.com/search?q=${encodeURIComponent(query)}`,
-            `https://magi.com/search?q=${encodeURIComponent(query)}`,
-            `https://fsoufsou.com/search?q=${encodeURIComponent(query)}`,
-            `https://yandex.com/search/?text=${encodeURIComponent(query)}`,
-            `https://duckduckgo.com/?q=${encodeURIComponent(query)}`,
-            `https://www.sogou.com/web?query=${encodeURIComponent(query)}`,
-            `https://www.so.com/s?q=${encodeURIComponent(query)}`,
-            `https://www.google.com/search?q=${encodeURIComponent(query)}` // 添加 Google 搜索
-        ];
-
-        // 在新标签页中打开所有搜索引擎
-        urls.forEach(url => {
-            window.open(url, '_blank');
+// 渲染引擎列表
+function renderEngineList(engines) {
+    const list = document.getElementById('engine-list');
+    list.innerHTML = engines.map((engine, idx) => `
+        <li>
+            ${engine}
+            <button class="delete-engine" data-idx="${idx}">删除</button>
+        </li>
+    `).join('');
+    
+    // 绑定删除事件
+    document.querySelectorAll('.delete-engine').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const engines = storage.get('engines') || [];
+            engines.splice(e.target.dataset.idx, 1);
+            storage.set('engines', engines);
+            renderEngineList(engines);
         });
-    } else {
-        alert('请输入搜索内容'); // 提示用户输入内容
-    }
-}
-
-const popup = document.getElementById('popup');
-const settings = document.getElementById('settings');
-const closePopup = document.querySelector('.close-button');
-const settingsClose = document.querySelector('.settings-close');
-const settingsButton = document.getElementById('settings-button');
-const addEngineButton = document.getElementById('add-engine');
-const engineList = document.getElementById('engine-list');
-const toggleThemeButton = document.getElementById('toggle-theme');
-const popup_UpD = document.getElementById('popup_UpD');
-const openButton = document.getElementById('open-popup-UpD');
-const closeButton = document.getElementById('close-popup-UpD');
-const closeButtonIcon = document.querySelector('.close-button');
-let darkTheme = false;
-
-// 初始弹出窗口
-popup.style.display = 'flex';
-
-// 关闭弹出窗口
-closePopup.addEventListener('click', () => {
-    popup.style.display = 'none';
-});
-
-// 打开设置窗口
-settingsButton.addEventListener('click', () => {
-    settings.style.display = 'block';
-});
-
-// 关闭设置窗口
-settingsClose.addEventListener('click', () => {
-    settings.style.display = 'none';
-});
-
-// 添加搜索引擎
-addEngineButton.addEventListener('click', () => {
-    const newEngine = document.getElementById('new-engine').value;
-    if (newEngine) {
-        const li = document.createElement('li');
-        li.textContent = newEngine;
-        engineList.appendChild(li);
-        document.getElementById('new-engine').value = '';
-    }
-});
-
-// 保存添加的APIs
-document.getElementById('add-engine').addEventListener('click', () => {
-    const newEngine = document.getElementById('new-engine').value;
-    if (newEngine) {
-        const engines = JSON.parse(localStorage.getItem('engines')) || [];
-        engines.push(newEngine);
-        localStorage.setItem('engines', JSON.stringify(engines));
-        // 更新UI
-        updateEngineList(engines);
-    }
-});
-
-// 更新搜索引擎列表UI
-function updateEngineList(engines) {
-    const engineList = document.getElementById('engine-list');
-    engineList.innerHTML = '';
-    engines.forEach(engine => {
-        const li = document.createElement('li');
-        li.textContent = engine;
-        engineList.appendChild(li);
     });
 }
 
+// 执行搜索
+function performSearch() {
+    const query = document.getElementById('search-input').value.trim();
+    if (!query) return alert('请输入搜索内容');
+    
+    // 保存搜索历史
+    historyUtils.add(query);
+    historyUtils.render('search-history');
+    
+    // 构建搜索URL
+    const engines = storage.get('engines') || [];
+    const urls = engines.map(engine => 
+        engine.replace('{query}', encodeURIComponent(query))
+    );
+    
+    // 打开所有引擎
+    urls.forEach(url => window.open(url, '_blank'));
+}
 
-// 切换主题
-toggleThemeButton.addEventListener('click', () => {
-    darkTheme = !darkTheme;
-    document.body.classList.toggle('theme-dark', darkTheme);
-});
+// 加载背景设置
+function loadBackground() {
+    const bg = storage.get('background');
+    if (bg) {
+        document.body.style.backgroundImage = `url(${bg.url})`;
+        document.body.style.backgroundSize = 'cover';
+        document.getElementById('bg-blur').value = bg.blur || 0;
+        document.body.style.backdropFilter = `blur(${bg.blur}px)`;
+    }
+}
 
-// 打开设置菜单
-document.getElementById('settings-button-top').addEventListener('click', () => {
-    settings.style.display = 'block';
-});
-
-// 上传背景图片并处理
-document.getElementById('background-upload').addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const img = new Image();
-            img.src = e.target.result;
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0, img.width, img.height);
-
-                const imageData = ctx.getImageData(0, 0, img.width, img.height).data;
-                const averageColor = getAverageColor(imageData);
-
-                // 根据平均颜色判断深色或浅色模式
-                const isDark = isDarkColor(averageColor);
-                const newTheme = isDark ? 'dark' : 'light';
-                document.documentElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-
-                // 设置背景图片
-                document.body.style.backgroundImage = `url(${e.target.result})`;
-                document.body.style.backgroundSize = 'cover'; // 可选：让背景图覆盖整个页面
-                localStorage.setItem('background-image', e.target.result);
+// 初始化事件监听
+function initEventListeners() {
+    // 搜索触发
+    document.getElementById('search-input').addEventListener('keypress', e => {
+        if (e.key === 'Enter') performSearch();
+    });
+    document.getElementById('search-button').addEventListener('click', performSearch);
+    
+    // 设置面板控制
+    document.getElementById('settings-button').addEventListener('click', () => {
+        document.getElementById('settings').style.display = 'block';
+    });
+    document.querySelector('.settings-close').addEventListener('click', () => {
+        document.getElementById('settings').style.display = 'none';
+    });
+    
+    // 添加引擎
+    document.getElementById('add-engine').addEventListener('click', () => {
+        const engine = document.getElementById('new-engine').value.trim();
+        if (engine && engine.includes('{query}')) {
+            const engines = storage.get('engines') || [];
+            storage.set('engines', [...new Set([...engines, engine])]);
+            renderEngineList(storage.get('engines'));
+            document.getElementById('new-engine').value = '';
+        } else {
+            alert('请包含{query}作为关键词占位符');
+        }
+    });
+    
+    // 主题切换
+    document.getElementById('toggle-theme').addEventListener('click', () => {
+        document.body.classList.toggle('theme-dark');
+        storage.set('theme', document.body.classList.contains('theme-dark') ? 'dark' : 'light');
+    });
+    document.getElementById('theme-preset').addEventListener('change', e => {
+        themeUtils.applyPreset(e.target.value);
+    });
+    
+    // 背景设置
+    document.getElementById('background-upload').addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const blur = document.getElementById('bg-blur').value;
+                storage.set('background', { url: e.target.result, blur });
+                loadBackground();
             };
-        };
-        reader.readAsDataURL(file);
-    }
-});
-
-// 计算平均颜色
-function getAverageColor(imageData) {
-    let rTotal = 0;
-    let gTotal = 0;
-    let bTotal = 0;
-    const numPixels = imageData.length / 4;
-
-    for (let i = 0; i < imageData.length; i += 4) {
-        rTotal += imageData[i];
-        gTotal += imageData[i + 1];
-        bTotal += imageData[i + 2];
-    }
-
-    return {
-        r: Math.floor(rTotal / numPixels),
-        g: Math.floor(gTotal / numPixels),
-        b: Math.floor(bTotal / numPixels)
-    };
+            reader.readAsDataURL(file);
+        }
+    });
+    document.getElementById('clear-background').addEventListener('click', () => {
+        storage.remove('background');
+        document.body.style.backgroundImage = 'none';
+        document.body.style.backdropFilter = 'none';
+    });
+    document.getElementById('bg-blur').addEventListener('input', e => {
+        const bg = storage.get('background');
+        if (bg) {
+            bg.blur = e.target.value;
+            storage.set('background', bg);
+            document.body.style.backdropFilter = `blur(${bg.blur}px)`;
+        }
+    });
+    
+    // 链接跳转
+    document.getElementById('Go-Github').addEventListener('click', () => {
+        window.open('https://github.com/StarsailsClover/LightSearch', '_blank');
+    });
+    document.getElementById('Github-ISS').addEventListener('click', () => {
+        window.open('https://github.com/StarsailsClover/LightSearch/issues', '_blank');
+    });
+    
+    // 快捷键支持
+    document.addEventListener('keydown', e => {
+        // Ctrl+/ 聚焦搜索框
+        if (e.ctrlKey && e.key === '/') {
+            e.preventDefault();
+            document.getElementById('search-input').focus();
+        }
+        // Esc 关闭设置面板
+        if (e.key === 'Escape') {
+            document.getElementById('settings').style.display = 'none';
+        }
+    });
 }
-
-// 判断颜色是否为深色
-function isDarkColor(color) {
-    const { r, g, b } = color;
-    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-    return brightness < 128;
-}
-
-// 打开模态框
-openButton.addEventListener('click', () => {
-    popup.style.display = 'flex';
-});
-
-// 关闭模态框
-closeButton.addEventListener('click', () => {
-    popup.style.display = 'none';
-});
-
-// 点击关闭按钮图标
-closeButtonIcon.addEventListener('click', () => {
-    popup.style.display = 'none';
-});
-
-// 点击模态框外部区域关闭
-window.addEventListener('click', (event) => {
-    if (event.target === popup) {
-        popup.style.display = 'none';
-    }
-});
-// 保存深色/浅色模式偏好
-document.getElementById('toggle-theme').addEventListener('click', () => {
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-});
-
-// 保存上传的图片背景
-document.getElementById('background-upload').addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            localStorage.setItem('background-image', reader.result);
-            document.body.style.backgroundImage = `url(${reader.result})`;
-        };
-        reader.readAsDataURL(file);
-    }
-});
-
-// 打开GitHub页面
-document.getElementById("Go-Github").onclick = function() {
-    window.open("https://github.com", "_blank");
-};
-
-// 页面加载完成后绑定事件
-document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("Go-Github").onclick = function() {
-        window.location.href = "https://github.com/StarsailsClover/LightSearch";
-    };
-});
-
-// 打开GitHub Issues页面
-document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("Github-ISS").onclick = function() {
-        window.location.href = "https://github.com/StarsailsClover/LightSearch/issues";
-    };
-});
-
