@@ -119,6 +119,6 @@ LightSearch/
 
 ---
 
-**Made with ❤️ by Sails**
+**Made with VSC by Sails**
 
 *LightSearch - Simple, Elegant, Powerful*
