@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "LightSearch",
+    "tagline": "A simple and elegant search aggregator"
+  },
+  "search": {
+    "placeholder": "Enter search keywords...",
+    "button": "Search",
+    "history": "Search History",
+    "noHistory": "No search history",
+    "academic": "Academic Search",
+    "academicPlaceholder": "Enter academic keywords..."
+  },
+  "settings": {
+    "title": "Settings",
+    "close": "Close",
+    "engines": {
+      "title": "Search Engines",
+      "add": "Add Engine",
+      "addPlaceholder": "Add engine (include {query})",
+      "delete": "Delete",
+      "academic": "Academic Engines"
+    },
+    "personalization": {
+      "title": "Personalization",
+      "theme": "Theme",
+      "themeAuto": "Follow System",
+      "themeClassic": "LightSearch Classic",
+      "themeClassicDark": "Classic Dark",
+      "themeLiquidGlass": "Liquid Glass",
+      "themeGreen": "Eye Comfort",
+      "background": "Background",
+      "backgroundUpload": "Upload Background",
+      "backgroundClear": "Clear Background",
+      "backgroundBlur": "Blur Level"
+    },
+    "language": {
+      "title": "Language",
+      "auto": "Auto Detect",
+      "zh": "简体中文",
+      "en": "English",
+      "ja": "日本語",
+      "ko": "한국어",
+      "ru": "Русский"
+    },
+    "advanced": {
+      "title": "Advanced",
+      "privacy": "Privacy Protection",
+      "blockTrackers": "Block Trackers",
+      "proxySearch": "Use Proxy",
+      "randomUA": "Random User-Agent"
+    },
+    "about": {
+      "title": "About",
+      "license": "Licensed under GPLv3",
+      "github": "GitHub Repository",
+      "issues": "Report Issue",
+      "feedback": "Feedback"
+    }
+  },
+  "academic": {
+    "title": "Academic Search",
+    "filters": {
+      "time": "Publication Time",
+      "timeAny": "Any Time",
+      "time1y": "Past Year",
+      "time5y": "Past 5 Years",
+      "time10y": "Past 10 Years",
+      "openAccess": "Open Access Only"
+    }
+  },
+  "commandPalette": {
+    "placeholder": "Type a command or search...",
+    "noResults": "No results found",
+    "categories": {
+      "search": "Search",
+      "settings": "Settings",
+      "navigation": "Navigation"
+    }
+  },
+  "comparison": {
+    "title": "Search Comparison",
+    "enable": "Enable Comparison Mode",
+    "selectEngines": "Select engines to compare",
+    "sideBySide": "Side by Side",
+    "tabs": "Tabs"
+  },
+  "messages": {
+    "engineAdded": "Engine added successfully",
+    "engineDeleted": "Engine deleted",
+    "invalidEngine": "Please include {query} as keyword placeholder",
+    "emptySearch": "Please enter search keywords",
+    "themeChanged": "Theme changed to {theme}",
+    "languageChanged": "Language changed to {language}"
+  }
+}

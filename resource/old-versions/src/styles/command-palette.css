@@ -1,0 +1,128 @@
+/* 
+LightSearch - Command Palette 样式
+Copyright (C) 2025 Sails
+*/
+
+.ls-command-palette {
+    width: 600px;
+}
+
+.ls-command-palette__input {
+    width: 100%;
+    padding: 16px 20px;
+    border: none;
+    border-bottom: 2px solid var(--ls-border);
+    font-size: 1.1rem;
+    background-color: transparent;
+    color: var(--ls-text);
+    outline: none;
+}
+
+.ls-command-palette__input::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.ls-command-palette__results {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: var(--ls-spacing-sm) 0;
+}
+
+.ls-command-palette__category {
+    margin-bottom: var(--ls-spacing-md);
+}
+
+.ls-command-palette__category-title {
+    padding: var(--ls-spacing-sm) var(--ls-spacing-md);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.5px;
+}
+
+.ls-command-palette__item {
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background-color var(--ls-transition-fast);
+    display: flex;
+    align-items: center;
+    gap: var(--ls-spacing-sm);
+}
+
+.ls-command-palette__item:hover {
+    background-color: rgba(66, 133, 244, 0.08);
+}
+
+.ls-command-palette__item.is-selected {
+    background-color: rgba(66, 133, 244, 0.12);
+    border-left: 3px solid var(--ls-accent);
+}
+
+.ls-command-palette__empty {
+    padding: var(--ls-spacing-xl);
+    text-align: center;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+/* 深色主题适配 */
+.ls-theme--classic-dark .ls-command-palette__input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.ls-theme--classic-dark .ls-command-palette__category-title {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.ls-theme--classic-dark .ls-command-palette__empty {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Liquid Glass 主题适配 */
+.ls-theme--liquid-glass .ls-command-palette__input {
+    color: white;
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+}
+
+.ls-theme--liquid-glass .ls-command-palette__input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.ls-theme--liquid-glass .ls-command-palette__category-title {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.ls-theme--liquid-glass .ls-command-palette__item:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.ls-theme--liquid-glass .ls-command-palette__item.is-selected {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-left-color: white;
+}
+
+/* 滚动条样式 */
+.ls-command-palette__results::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ls-command-palette__results::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.ls-command-palette__results::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.ls-command-palette__results::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.ls-theme--classic-dark .ls-command-palette__results::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.ls-theme--classic-dark .ls-command-palette__results::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}

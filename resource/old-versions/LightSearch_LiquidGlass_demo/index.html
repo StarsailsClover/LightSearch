@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LightSearch — Liquid Glass Demo</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="brand">LightSearch</header>
+    <section class="center">
+      <input id="q" class="search-input" placeholder=" " aria-label="search" />
+      <div class="controls">
+        <button id="academicBtn" class="btn">Academic</button>
+        <button id="settingsBtn" class="btn">Settings</button>
+        <button id="searchBtn" class="btn primary">Search</button>
+      </div>
+    </section>
+    <section id="results" class="results" aria-live="polite"></section>
+  </main>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-close="true"></div>
+    <div class="modal__panel">
+      <h3 data-i18n="settings.title">Settings</h3>
+      <label data-i18n="settings.language">Language</label>
+      <select id="langSelect">
+        <option value="auto">Auto</option>
+        <option value="en">English</option>
+        <option value="zh">中文</option>
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+        <option value="ru">Русский</option>
+      </select>
+      <label data-i18n="settings.theme">Theme</label>
+      <select id="themeSelect">
+        <option value="classic">LightSearch Classic</option>
+        <option value="liquid">Liquid Glass</option>
+      </select>
+      <div class="modal__actions">
+        <button id="settingsClose" class="btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Academic Modal -->
+  <div id="academicModal" class="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-close="true"></div>
+    <div class="modal__panel">
+      <h3 data-i18n="academic.title">Academic Search</h3>
+      <label data-i18n="academic.scope">Scope</label>
+      <select id="academicScope"><option value="all">All</option><option value="papers">Papers</option><option value="books">Books</option></select>
+      <div class="modal__actions">
+        <button id="academicDo" class="btn primary">Search Academic</button>
+        <button id="academicClose" class="btn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "LightSearch",
+    "tagline": "간단하고 우아한 검색 통합 도구"
+  },
+  "search": {
+    "placeholder": "검색 키워드 입력...",
+    "button": "검색",
+    "history": "검색 기록",
+    "noHistory": "검색 기록이 없습니다",
+    "academic": "학술 검색",
+    "academicPlaceholder": "학술 키워드 입력..."
+  },
+  "settings": {
+    "title": "설정",
+    "close": "닫기",
+    "engines": {
+      "title": "검색 엔진",
+      "add": "엔진 추가",
+      "addPlaceholder": "엔진 추가 ({query} 포함)",
+      "delete": "삭제",
+      "academic": "학술 엔진"
+    },
+    "personalization": {
+      "title": "개인화",
+      "theme": "테마",
+      "themeAuto": "시스템 따라가기",
+      "themeClassic": "LightSearch Classic",
+      "themeClassicDark": "클래식 다크",
+      "themeLiquidGlass": "Liquid Glass",
+      "themeGreen": "눈 편안",
+      "background": "배경",
+      "backgroundUpload": "배경 업로드",
+      "backgroundClear": "배경 지우기",
+      "backgroundBlur": "흐림 수준"
+    },
+    "language": {
+      "title": "언어",
+      "auto": "자동 감지",
+      "zh": "简体中文",
+      "en": "English",
+      "ja": "日本語",
+      "ko": "한국어",
+      "ru": "Русский"
+    },
+    "advanced": {
+      "title": "고급",
+      "privacy": "개인정보 보호",
+      "blockTrackers": "추적기 차단",
+      "proxySearch": "프록시 사용",
+      "randomUA": "랜덤 User-Agent"
+    },
+    "about": {
+      "title": "정보",
+      "license": "GPLv3 라이선스",
+      "github": "GitHub 저장소",
+      "issues": "문제 보고",
+      "feedback": "피드백"
+    }
+  },
+  "academic": {
+    "title": "학술 검색",
+    "filters": {
+      "time": "발행 시기",
+      "timeAny": "전체",
+      "time1y": "최근 1년",
+      "time5y": "최근 5년",
+      "time10y": "최근 10년",
+      "openAccess": "오픈 액세스만"
+    }
+  },
+  "commandPalette": {
+    "placeholder": "명령 또는 검색 입력...",
+    "noResults": "결과를 찾을 수 없습니다",
+    "categories": {
+      "search": "검색",
+      "settings": "설정",
+      "navigation": "탐색"
+    }
+  },
+  "comparison": {
+    "title": "검색 비교",
+    "enable": "비교 모드 활성화",
+    "selectEngines": "비교할 엔진 선택",
+    "sideBySide": "나란히",
+    "tabs": "탭"
+  },
+  "messages": {
+    "engineAdded": "엔진이 추가되었습니다",
+    "engineDeleted": "엔진이 삭제되었습니다",
+    "invalidEngine": "{query}를 키워드 자리 표시자로 포함하세요",
+    "emptySearch": "검색 키워드를 입력하세요",
+    "themeChanged": "테마가 {theme}(으)로 변경되었습니다",
+    "languageChanged": "언어가 {language}(으)로 변경되었습니다"
+  }
+}

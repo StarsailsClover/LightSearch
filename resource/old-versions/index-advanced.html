@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LightSearch - Simple & Elegant Search Aggregator</title>
+    
+    <!-- Meta信息 -->
+    <meta name="description" content="A simple and elegant search aggregator with multi-engine support">
+    <meta name="keywords" content="search, aggregator, multi-engine, academic search">
+    <meta name="author" content="Sails">
+    <meta name="copyright" content="Copyright (C) 2025 LightSearch Developers">
+    <meta name="license" content="GNU General Public License v3.0">
+    
+    <!-- 样式 -->
+    <link rel="stylesheet" href="./src/styles/main.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="./icon.png">
+</head>
+<body>
+    <!-- 主搜索区域 -->
+    <div class="ls-search-container">
+        <h1 class="ls-logo" data-i18n="app.name">LightSearch</h1>
+        
+        <div class="ls-search-box">
+            <input 
+                type="text" 
+                class="ls-search-input js-search-input" 
+                data-i18n-placeholder="search.placeholder"
+                placeholder="Enter search keywords..."
+                autocomplete="off"
+            >
+            <button 
+                class="ls-search-btn js-search-btn" 
+                data-i18n="search.button">
+                Search
+            </button>
+        </div>
+        
+        <!-- 搜索历史 -->
+        <div class="ls-history js-search-history"></div>
+    </div>
+
+    <!-- 控制按钮 -->
+    <div class="ls-controls">
+        <button class="ls-btn js-settings-btn" data-i18n="settings.title">Settings</button>
+        <button class="ls-btn js-academic-btn" data-i18n="search.academic">Academic Search</button>
+    </div>
+
+    <!-- 设置弹窗 -->
+    <div class="ls-popup ls-settings" data-popup="settings">
+        <div class="ls-popup__header">
+            <h2 class="ls-popup__title" data-i18n="settings.title">Settings</h2>
+            <button class="ls-popup__close js-popup-close">&times;</button>
+        </div>
+        
+        <div class="ls-popup__body">
+            <!-- 搜索引擎管理 -->
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title" data-i18n="settings.engines.title">
+                    Search Engines
+                </h3>
+                <div class="ls-engine-list js-engine-list"></div>
+                <div style="display: flex; gap: 8px; margin-top: 12px;">
+                    <input 
+                        type="text" 
+                        class="ls-input js-new-engine" 
+                        data-i18n-placeholder="settings.engines.addPlaceholder"
+                        placeholder="Add engine (include {query})"
+                    >
+                    <button class="ls-btn ls-btn--primary js-add-engine" data-i18n="settings.engines.add">
+                        Add
+                    </button>
+                </div>
+            </div>
+
+            <!-- 个性化设置 -->
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title" data-i18n="settings.personalization.title">
+                    Personalization
+                </h3>
+                
+                <div class="ls-settings__item">
+                    <span class="ls-settings__label" data-i18n="settings.personalization.theme">
+                        Theme
+                    </span>
+                    <select class="ls-select js-theme-select">
+                        <!-- 动态生成 -->
+                    </select>
+                </div>
+
+                <div class="ls-settings__item">
+                    <span class="ls-settings__label" data-i18n="settings.personalization.background">
+                        Background
+                    </span>
+                    <div style="display: flex; gap: 8px;">
+                        <input 
+                            type="file" 
+                            class="js-background-upload" 
+                            accept="image/*"
+                            style="display: none;"
+                            id="background-upload"
+                        >
+                        <label for="background-upload" class="ls-btn">
+                            <span data-i18n="settings.personalization.backgroundUpload">Upload</span>
+                        </label>
+                        <button class="ls-btn js-background-clear" data-i18n="settings.personalization.backgroundClear">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 语言设置 -->
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title" data-i18n="settings.language.title">
+                    Language
+                </h3>
+                <select class="ls-select js-language-select">
+                    <!-- 动态生成 -->
+                </select>
+            </div>
+
+            <!-- 高级设置 -->
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title" data-i18n="settings.advanced.title">
+                    Advanced
+                </h3>
+                
+                <div class="ls-settings__item">
+                    <span class="ls-settings__label" data-i18n="comparison.enable">
+                        Enable Comparison Mode
+                    </span>
+                    <input type="checkbox" class="ls-checkbox js-comparison-toggle">
+                </div>
+            </div>
+
+            <!-- 关于 -->
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title" data-i18n="settings.about.title">
+                    About
+                </h3>
+                <p data-i18n="settings.about.license">Licensed under GPLv3</p>
+                <div style="display: flex; gap: 8px; margin-top: 12px;">
+                    <button class="ls-btn js-github-link" data-i18n="settings.about.github">
+                        GitHub
+                    </button>
+                    <button class="ls-btn js-github-issues" data-i18n="settings.about.issues">
+                        Issues
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 学术搜索弹窗 -->
+    <div class="ls-popup ls-settings" data-popup="academic">
+        <div class="ls-popup__header">
+            <h2 class="ls-popup__title" data-i18n="academic.title">Academic Search</h2>
+            <button class="ls-popup__close js-popup-close">&times;</button>
+        </div>
+        
+        <div class="ls-popup__body">
+            <!-- 搜索框 -->
+            <div class="ls-search-box">
+                <input 
+                    type="text" 
+                    class="ls-search-input js-academic-search-input" 
+                    data-i18n-placeholder="search.academicPlaceholder"
+                    placeholder="Enter academic keywords..."
+                >
+                <button class="ls-search-btn js-academic-search-btn" data-i18n="search.button">
+                    Search
+                </button>
+            </div>
+
+            <!-- 过滤器 -->
+            <div class="ls-academic-filters">
+                <label>
+                    <span data-i18n="academic.filters.time">Publication Time</span>:
+                    <select class="ls-select js-time-filter">
+                        <option value="any" data-i18n="academic.filters.timeAny">Any Time</option>
+                        <option value="1" data-i18n="academic.filters.time1y">Past Year</option>
+                        <option value="5" data-i18n="academic.filters.time5y">Past 5 Years</option>
+                        <option value="10" data-i18n="academic.filters.time10y">Past 10 Years</option>
+                    </select>
+                </label>
+            </div>
+
+            <!-- 学术引擎管理 -->
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title" data-i18n="settings.engines.academic">
+                    Academic Engines
+                </h3>
+                <div class="ls-engine-list js-academic-engine-list"></div>
+                <div style="display: flex; gap: 8px; margin-top: 12px;">
+                    <input 
+                        type="text" 
+                        class="ls-input js-new-academic-engine" 
+                        data-i18n-placeholder="settings.engines.addPlaceholder"
+                        placeholder="Add engine (include {query})"
+                    >
+                    <button class="ls-btn ls-btn--primary js-add-academic-engine" data-i18n="settings.engines.add">
+                        Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 脚本 -->
+    <script type="module" src="./src/app.js"></script>
+
+    <!-- 版权声明 -->
+    <!--
+        LightSearch - A simple and elegant search aggregator
+        Copyright (C) 2025 Sails
+        
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+        
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+        GNU General Public License for more details.
+        
+        You should have received a copy of the GNU General Public License
+        along with this program. If not, see <https://www.gnu.org/licenses/>.
+    -->
+</body>
+</html>

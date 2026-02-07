@@ -1,0 +1,13 @@
+{
+  "name": "lightsearch-liquidglass-demo",
+  "version": "0.1.0",
+  "description": "LightSearch demo with Liquid Glass inspired theme and mock API",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "serve-static": "npx serve public -l 5000"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LightSearch - 测试页面</title>
+    <link rel="stylesheet" href="./src/styles/main.css">
+    <style>
+        /* 调试样式 */
+        .debug-info {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            max-width: 300px;
+            z-index: 9999;
+        }
+        .debug-info.success { background: rgba(0,128,0,0.8); }
+        .debug-info.error { background: rgba(255,0,0,0.8); }
+    </style>
+</head>
+<body>
+    <!-- 调试信息 -->
+    <div id="debug" class="debug-info">正在加载...</div>
+
+    <!-- 主搜索区域 -->
+    <div class="ls-search-container">
+        <h1 class="ls-logo">LightSearch</h1>
+        
+        <div class="ls-search-box">
+            <input 
+                type="text" 
+                class="ls-search-input js-search-input" 
+                placeholder="输入搜索关键词..."
+                autocomplete="off"
+            >
+            <button class="ls-search-btn js-search-btn">搜索</button>
+        </div>
+        
+        <!-- 搜索历史 -->
+        <div class="ls-history js-search-history">
+            <p style="color: #666; font-size: 0.9rem;">暂无搜索历史</p>
+        </div>
+    </div>
+
+    <!-- 控制按钮 -->
+    <div class="ls-controls">
+        <button class="ls-btn js-settings-btn">设置</button>
+        <button class="ls-btn js-academic-btn">学术搜索</button>
+        <button class="ls-btn" onclick="testButtons()">测试按钮</button>
+    </div>
+
+    <!-- 设置弹窗 -->
+    <div class="ls-popup ls-settings" data-popup="settings">
+        <div class="ls-popup__header">
+            <h2 class="ls-popup__title">设置</h2>
+            <button class="ls-popup__close js-popup-close">&times;</button>
+        </div>
+        
+        <div class="ls-popup__body">
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title">搜索引擎</h3>
+                <div class="ls-engine-list js-engine-list">
+                    <!-- 动态生成 -->
+                </div>
+                <div style="display: flex; gap: 8px; margin-top: 12px;">
+                    <input 
+                        type="text" 
+                        class="ls-input js-new-engine" 
+                        placeholder="添加引擎（包含 {query}）"
+                    >
+                    <button class="ls-btn ls-btn--primary js-add-engine">添加</button>
+                </div>
+            </div>
+
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title">主题</h3>
+                <select class="ls-select js-theme-select">
+                    <option value="classic">LightSearch Classic</option>
+                    <option value="classic-dark">Classic Dark</option>
+                    <option value="liquid-glass">Liquid Glass</option>
+                    <option value="green">Eye Comfort</option>
+                </select>
+            </div>
+
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title">语言</h3>
+                <select class="ls-select js-language-select">
+                    <option value="zh">简体中文</option>
+                    <option value="en">English</option>
+                    <option value="ja">日本語</option>
+                    <option value="ko">한국어</option>
+                    <option value="ru">Русский</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- 学术搜索弹窗 -->
+    <div class="ls-popup ls-settings" data-popup="academic">
+        <div class="ls-popup__header">
+            <h2 class="ls-popup__title">学术搜索</h2>
+            <button class="ls-popup__close js-popup-close">&times;</button>
+        </div>
+        
+        <div class="ls-popup__body">
+            <div class="ls-search-box">
+                <input 
+                    type="text" 
+                    class="ls-search-input js-academic-search-input" 
+                    placeholder="输入学术关键词..."
+                >
+                <button class="ls-search-btn js-academic-search-btn">搜索</button>
+            </div>
+
+            <div class="ls-academic-filters">
+                <label>
+                    <span>发表时间</span>:
+                    <select class="ls-select js-time-filter">
+                        <option value="any">不限</option>
+                        <option value="1">近1年</option>
+                        <option value="5">近5年</option>
+                        <option value="10">近10年</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title">学术引擎</h3>
+                <div class="ls-engine-list js-academic-engine-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 简单的测试脚本
+        function showDebug(msg, type = 'info') {
+            const debug = document.getElementById('debug');
+            debug.textContent = msg;
+            debug.className = 'debug-info ' + type;
+            console.log(msg);
+        }
+
+        function testButtons() {
+            showDebug('按钮点击测试成功！', 'success');
+            setTimeout(() => {
+                showDebug('等待模块加载...', 'info');
+            }, 2000);
+        }
+
+        // 检查按钮是否可点击
+        document.addEventListener('DOMContentLoaded', () => {
+            showDebug('DOM已加载，检查按钮...', 'info');
+            
+            const buttons = document.querySelectorAll('button');
+            showDebug(`找到 ${buttons.length} 个按钮`, 'success');
+            
+            // 测试按钮点击
+            buttons.forEach((btn, idx) => {
+                btn.addEventListener('click', () => {
+                    console.log(`按钮 ${idx} 被点击:`, btn.textContent);
+                });
+            });
+        });
+    </script>
+
+    <!-- 加载主应用 -->
+    <script type="module">
+        import { i18n } from './src/core/i18n.js';
+        import { popupManager } from './src/core/popup.js';
+        import { themeManager } from './src/core/theme.js';
+        import { searchEngine } from './src/core/searchEngine.js';
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            try {
+                showDebug('开始初始化模块...', 'info');
+
+                // 初始化i18n
+                const lang = i18n.detectLanguage();
+                await i18n.loadLanguage(lang);
+                showDebug(`语言加载成功: ${lang}`, 'success');
+
+                // 初始化主题
+                themeManager.applyTheme('classic');
+                showDebug('主题加载成功', 'success');
+
+                // 注册弹窗
+                const settingsPopup = document.querySelector('[data-popup="settings"]');
+                const academicPopup = document.querySelector('[data-popup="academic"]');
+                
+                if (settingsPopup) {
+                    popupManager.register('settings', settingsPopup);
+                    showDebug('设置弹窗注册成功', 'success');
+                }
+                
+                if (academicPopup) {
+                    popupManager.register('academic', academicPopup);
+                    showDebug('学术搜索弹窗注册成功', 'success');
+                }
+
+                // 绑定按钮事件
+                document.querySelector('.js-settings-btn')?.addEventListener('click', () => {
+                    console.log('打开设置');
+                    popupManager.open('settings');
+                });
+
+                document.querySelector('.js-academic-btn')?.addEventListener('click', () => {
+                    console.log('打开学术搜索');
+                    popupManager.open('academic');
+                });
+
+                document.querySelector('.js-search-btn')?.addEventListener('click', () => {
+                    const query = document.querySelector('.js-search-input').value;
+                    console.log('搜索:', query);
+                    if (query) {
+                        searchEngine.search(query);
+                    }
+                });
+
+                // 渲染引擎列表
+                const engineList = document.querySelector('.js-engine-list');
+                if (engineList) {
+                    engineList.innerHTML = searchEngine.engines.map((engine, idx) => `
+                        <div class="ls-engine-item">
+                            <input type="checkbox" class="ls-checkbox" ${engine.enabled ? 'checked' : ''}>
+                            <span class="ls-engine-item__name">${engine.name}</span>
+                            <span class="ls-engine-item__url">${engine.url}</span>
+                            <button class="ls-engine-item__delete">删除</button>
+                        </div>
+                    `).join('');
+                }
+
+                showDebug('✅ 所有模块加载成功！', 'success');
+
+            } catch (error) {
+                showDebug('❌ 初始化失败: ' + error.message, 'error');
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>

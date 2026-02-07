@@ -1,0 +1,54 @@
+/* LightSearch — styles (classic + Liquid Glass inspired theme)
+   NOTE: This is an original implementation inspired by frosted-glass visual language.
+   It reproduces the look and behavior (backdrop-filter blur, pearlescent borders, subtle highlights)
+   without copying any third-party source verbatim.
+*/
+:root{
+  --bg:#f7f8fb;
+  --text:#0f1724;
+  --muted:#667085;
+  --accent:#2563eb;
+  --panel-bg: rgba(255,255,255,0.85);
+  --glass-edge: rgba(255,255,255,0.6);
+  --glass-border: rgba(255,255,255,0.5);
+  --shadow: 0 6px 30px rgba(2,6,23,0.08);
+  --blur: 10px;
+  --radius: 14px;
+}
+:root[data-theme="liquid"]{
+  --bg: linear-gradient(180deg,#eef2ff 0%, #f8fbff 100%);
+  --text:#07102a;
+  --muted:#485063;
+  --accent:#6d28d9;
+  --panel-bg: rgba(255,255,255,0.18);
+  --glass-edge: rgba(255,255,255,0.85);
+  --glass-border: rgba(255,255,255,0.35);
+  --shadow: 0 12px 40px rgba(13,18,32,0.12);
+  --blur: 16px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;background:var(--bg);color:var(--text)}
+.app{max-width:980px;margin:6vh auto;padding:28px;min-height:70vh}
+.brand{text-align:center;font-weight:700;font-size:20px;margin-bottom:22px}
+.center{display:flex;gap:10px;align-items:center;justify-content:center}
+.search-input{flex:1;min-width:260px;padding:14px 18px;border-radius:999px;border:1px solid rgba(15,23,42,0.06);background:transparent;font-size:16px;outline:none;backdrop-filter:none}
+.controls{display:flex;gap:8px}
+.btn{padding:8px 12px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);background:transparent;cursor:pointer}
+.btn.primary{background:var(--accent);color:white;border:none}
+.results{margin-top:28px;display:grid;gap:12px}
+.card{padding:14px;border-radius:12px;background:var(--panel-bg);box-shadow:var(--shadow);border:1px solid var(--glass-border);backdrop-filter:blur(var(--blur));overflow:hidden}
+.meta{font-size:13px;color:var(--muted);margin-bottom:8px}
+.title{font-weight:600;margin-bottom:6px}
+.compare-row{display:flex;gap:12px}
+.compare-col{flex:1}
+/* Modal */
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .16s ease}
+.modal.is-active{pointer-events:auto;opacity:1}
+.modal__backdrop{position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,6,22,0.35),rgba(3,6,22,0.45))}
+.modal__panel{position:relative;z-index:1;width:min(720px,94%);padding:18px;border-radius:12px;background:var(--panel-bg);border:1px solid var(--glass-border);box-shadow:var(--shadow);backdrop-filter: blur(var(--blur))}
+.modal__actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+/* Liquid Glass accent edges and highlight */
+:root[data-theme="liquid"] .modal__panel::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(90deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));mix-blend-mode:overlay}
+/* responsive */
+@media(max-width:640px){.center{flex-direction:column}.controls{width:100%;justify-content:space-between}.search-input{width:100%}}

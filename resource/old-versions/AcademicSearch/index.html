@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="theme-light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学术搜索 | LightSearch</title>
+    <link rel="stylesheet" href="../styles.css">
+    <meta name="copyright" content="Copyright (C) 2023 LightSearch Developers">
+    <meta name="license" content="GNU General Public License v3.0">
+</head>
+<body>
+    <div class="search-container">
+        <h1>学术搜索</h1>
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="输入学术关键词...">
+            <button id="search-button">搜索</button>
+        </div>
+        
+        <!-- 学术过滤选项 -->
+        <div class="academic-filters">
+            <label>发表时间：</label>
+            <select id="time-filter">
+                <option value="any">不限</option>
+                <option value="1y">近1年</option>
+                <option value="5y">近5年</option>
+                <option value="10y">近10年</option>
+            </select>
+            <label>开放获取：</label>
+            <input type="checkbox" id="open-access">
+        </div>
+    </div>
+
+    <div class="control-buttons">
+        <button id="settings-button-top">设置</button>
+        <button class="AS-button" onclick="window.location.href='../'">返回主搜索</button>
+    </div>
+
+    <!-- 设置面板 -->
+    <div id="settings" class="settings">
+        <div class="settings-sidebar">
+            <h2>学术搜索设置</h2>
+            <div>
+                <h3>学术引擎</h3>
+                <ul id="engine-list"></ul>
+                <input type="text" id="new-engine" placeholder="添加学术引擎（含{query}）">
+                <button id="add-engine">添加</button>
+            </div>
+            <div>
+                <h3>主题</h3>
+                <button id="toggle-theme">切换深/浅色</button>
+            </div>
+            <div>
+                <h3>设置图片背景</h3>
+                <input type="file" id="background-upload" accept="image/*">
+            </div>
+            <div>
+                <h3>项目链接</h3>
+                <button id="Go-Github">Github主页</button>
+                <button id="Github-ISS">提交建议</button>
+            </div>
+        </div>
+        <span class="settings-close">&times;</span>
+    </div>
+
+    <script src="../utils.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

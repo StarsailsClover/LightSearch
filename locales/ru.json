@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "LightSearch",
+    "tagline": "Простой и элегантный агрегатор поиска"
+  },
+  "search": {
+    "placeholder": "Введите ключевые слова...",
+    "button": "Поиск",
+    "history": "История поиска",
+    "noHistory": "Нет истории поиска",
+    "academic": "Академический поиск",
+    "academicPlaceholder": "Введите академические ключевые слова..."
+  },
+  "settings": {
+    "title": "Настройки",
+    "close": "Закрыть",
+    "engines": {
+      "title": "Поисковые системы",
+      "add": "Добавить движок",
+      "addPlaceholder": "Добавить движок (включить {query})",
+      "delete": "Удалить",
+      "academic": "Академические движки"
+    },
+    "personalization": {
+      "title": "Персонализация",
+      "theme": "Тема",
+      "themeAuto": "Следовать системе",
+      "themeClassic": "LightSearch Classic",
+      "themeClassicDark": "Классическая темная",
+      "themeLiquidGlass": "Liquid Glass",
+      "themeGreen": "Комфорт для глаз",
+      "background": "Фон",
+      "backgroundUpload": "Загрузить фон",
+      "backgroundClear": "Очистить фон",
+      "backgroundBlur": "Уровень размытия"
+    },
+    "language": {
+      "title": "Язык",
+      "auto": "Автоопределение",
+      "zh": "简体中文",
+      "en": "English",
+      "ja": "日本語",
+      "ko": "한국어",
+      "ru": "Русский"
+    },
+    "advanced": {
+      "title": "Расширенные",
+      "privacy": "Защита конфиденциальности",
+      "blockTrackers": "Блокировать трекеры",
+      "proxySearch": "Использовать прокси",
+      "randomUA": "Случайный User-Agent"
+    },
+    "about": {
+      "title": "О программе",
+      "license": "Лицензия GPLv3",
+      "github": "Репозиторий GitHub",
+      "issues": "Сообщить о проблеме",
+      "feedback": "Обратная связь"
+    }
+  },
+  "academic": {
+    "title": "Академический поиск",
+    "filters": {
+      "time": "Время публикации",
+      "timeAny": "Любое время",
+      "time1y": "За последний год",
+      "time5y": "За последние 5 лет",
+      "time10y": "За последние 10 лет",
+      "openAccess": "Только открытый доступ"
+    }
+  },
+  "commandPalette": {
+    "placeholder": "Введите команду или поиск...",
+    "noResults": "Результаты не найдены",
+    "categories": {
+      "search": "Поиск",
+      "settings": "Настройки",
+      "navigation": "Навигация"
+    }
+  },
+  "comparison": {
+    "title": "Сравнение поиска",
+    "enable": "Включить режим сравнения",
+    "selectEngines": "Выберите движки для сравнения",
+    "sideBySide": "Рядом",
+    "tabs": "Вкладки"
+  },
+  "messages": {
+    "engineAdded": "Движок успешно добавлен",
+    "engineDeleted": "Движок удален",
+    "invalidEngine": "Пожалуйста, включите {query} как заполнитель ключевого слова",
+    "emptySearch": "Пожалуйста, введите ключевые слова для поиска",
+    "themeChanged": "Тема изменена на {theme}",
+    "languageChanged": "Язык изменен на {language}"
+  }
+}

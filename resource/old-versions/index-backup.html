@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LightSearch - 单文件版</title>
+    <style>
+        /* 内联所有CSS - 无需外部文件 */
+        :root {
+            --ls-bg: #ffffff;
+            --ls-text: #000000;
+            --ls-accent: #4285f4;
+            --ls-card-bg: #ffffff;
+            --ls-border: #ddd;
+            --ls-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --ls-spacing-sm: 8px;
+            --ls-spacing-md: 16px;
+            --ls-spacing-lg: 24px;
+            --ls-radius-sm: 4px;
+            --ls-radius-md: 8px;
+            --ls-radius-xl: 24px;
+            --ls-transition-fast: 0.15s ease;
+            --ls-transition-normal: 0.25s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: var(--ls-bg);
+            color: var(--ls-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color var(--ls-transition-normal);
+        }
+
+        .ls-search-container {
+            margin-top: 15vh;
+            text-align: center;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .ls-logo {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: var(--ls-spacing-lg);
+        }
+
+        .ls-search-box {
+            display: flex;
+            gap: var(--ls-spacing-sm);
+            margin: var(--ls-spacing-lg) 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .ls-search-input {
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+            padding: 15px 20px;
+            border: 2px solid var(--ls-border);
+            border-radius: var(--ls-radius-xl);
+            font-size: 1.1rem;
+            transition: border-color var(--ls-transition-fast);
+        }
+
+        .ls-search-input:focus {
+            outline: none;
+            border-color: var(--ls-accent);
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+        }
+
+        .ls-search-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: var(--ls-radius-xl);
+            background-color: var(--ls-accent);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--ls-transition-fast);
+        }
+
+        .ls-search-btn:hover {
+            background-color: #357ae8;
+            transform: translateY(-1px);
+        }
+
+        .ls-history {
+            margin: var(--ls-spacing-lg) 0;
+            padding: var(--ls-spacing-md);
+            min-height: 40px;
+        }
+
+        .ls-history__item {
+            display: inline-block;
+            margin: 4px;
+            padding: 8px 16px;
+            background-color: rgba(66, 133, 244, 0.1);
+            border: 1px solid rgba(66, 133, 244, 0.2);
+            border-radius: var(--ls-radius-xl);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all var(--ls-transition-fast);
+        }
+
+        .ls-history__item:hover {
+            background-color: rgba(66, 133, 244, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .ls-controls {
+            position: fixed;
+            top: var(--ls-spacing-lg);
+            right: var(--ls-spacing-lg);
+            display: flex;
+            gap: var(--ls-spacing-sm);
+            flex-wrap: wrap;
+        }
+
+        .ls-btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: var(--ls-radius-md);
+            background-color: white;
+            box-shadow: var(--ls-shadow);
+            cursor: pointer;
+            transition: all var(--ls-transition-fast);
+        }
+
+        .ls-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 弹窗样式 */
+        .ls-popup-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--ls-transition-normal);
+        }
+
+        .ls-popup-overlay.is-active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .ls-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all var(--ls-transition-normal);
+        }
+
+        .ls-popup.is-active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .ls-popup__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--ls-spacing-lg);
+            border-bottom: 1px solid var(--ls-border);
+        }
+
+        .ls-popup__close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.6;
+        }
+
+        .ls-popup__close:hover {
+            opacity: 1;
+        }
+
+        .ls-popup__body {
+            padding: var(--ls-spacing-lg);
+        }
+
+        .ls-settings__section {
+            margin-bottom: var(--ls-spacing-lg);
+        }
+
+        .ls-settings__section-title {
+            font-size: 1.1rem;
+            margin-bottom: var(--ls-spacing-md);
+        }
+
+        .ls-engine-item {
+            display: flex;
+            align-items: center;
+            gap: var(--ls-spacing-sm);
+            padding: var(--ls-spacing-md);
+            margin-bottom: var(--ls-spacing-sm);
+            background-color: rgba(0, 0, 0, 0.02);
+            border-radius: var(--ls-radius-sm);
+        }
+
+        .ls-engine-item__name {
+            font-weight: 500;
+            min-width: 100px;
+        }
+
+        .ls-engine-item__url {
+            flex: 1;
+            font-size: 0.85rem;
+            color: #666;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .ls-engine-item__delete {
+            padding: 6px 12px;
+            border: none;
+            background-color: #ff4444;
+            color: white;
+            border-radius: var(--ls-radius-sm);
+            cursor: pointer;
+        }
+
+        .ls-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--ls-border);
+            border-radius: var(--ls-radius-sm);
+        }
+
+        .ls-select {
+            padding: 8px 12px;
+            border: 1px solid var(--ls-border);
+            border-radius: var(--ls-radius-sm);
+        }
+
+        /* 深色主题 */
+        body.theme-dark {
+            --ls-bg: #121212;
+            --ls-text: #ffffff;
+            --ls-card-bg: #1e1e1e;
+            --ls-border: #333;
+        }
+
+        body.theme-dark .ls-search-input,
+        body.theme-dark .ls-popup,
+        body.theme-dark .ls-btn {
+            background-color: #1e1e1e;
+            color: white;
+            border-color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .ls-search-box {
+                flex-direction: column;
+            }
+            .ls-search-input {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 弹窗遮罩 -->
+    <div class="ls-popup-overlay" id="overlay"></div>
+
+    <!-- 主搜索区域 -->
+    <div class="ls-search-container">
+        <h1 class="ls-logo">LightSearch</h1>
+        
+        <div class="ls-search-box">
+            <input 
+                type="text" 
+                class="ls-search-input" 
+                id="searchInput"
+                placeholder="输入搜索关键词..."
+                autocomplete="off"
+            >
+            <button class="ls-search-btn" id="searchBtn">搜索</button>
+        </div>
+        
+        <div class="ls-history" id="searchHistory"></div>
+    </div>
+
+    <!-- 控制按钮 -->
+    <div class="ls-controls">
+        <button class="ls-btn" id="settingsBtn">设置</button>
+        <button class="ls-btn" id="academicBtn">学术搜索</button>
+        <button class="ls-btn" id="themeBtn">切换主题</button>
+    </div>
+
+    <!-- 设置弹窗 -->
+    <div class="ls-popup" id="settingsPopup">
+        <div class="ls-popup__header">
+            <h2>设置</h2>
+            <button class="ls-popup__close" onclick="closePopup('settingsPopup')">&times;</button>
+        </div>
+        <div class="ls-popup__body">
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title">搜索引擎</h3>
+                <div id="engineList"></div>
+                <div style="display: flex; gap: 8px; margin-top: 12px;">
+                    <input type="text" class="ls-input" id="newEngine" placeholder="添加引擎（包含 {query}）">
+                    <button class="ls-btn" onclick="addEngine()">添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 学术搜索弹窗 -->
+    <div class="ls-popup" id="academicPopup">
+        <div class="ls-popup__header">
+            <h2>学术搜索</h2>
+            <button class="ls-popup__close" onclick="closePopup('academicPopup')">&times;</button>
+        </div>
+        <div class="ls-popup__body">
+            <div class="ls-search-box">
+                <input type="text" class="ls-search-input" id="academicInput" placeholder="输入学术关键词...">
+                <button class="ls-search-btn" onclick="performAcademicSearch()">搜索</button>
+            </div>
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title">学术引擎</h3>
+                <div id="academicEngineList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== 数据存储 ==========
+        const storage = {
+            get: (key) => {
+                const value = localStorage.getItem(key);
+                return value ? JSON.parse(value) : null;
+            },
+            set: (key, value) => {
+                localStorage.setItem(key, JSON.stringify(value));
+            }
+        };
+
+        // ========== 搜索引擎管理 ==========
+        let engines = storage.get('engines') || [
+            { name: 'Google', url: 'https://www.google.com/search?q={query}', enabled: true },
+            { name: 'Bing', url: 'https://www.bing.com/search?q={query}', enabled: true },
+            { name: 'Baidu', url: 'https://www.baidu.com/s?ie=utf-8&word={query}', enabled: true }
+        ];
+
+        let academicEngines = storage.get('academicEngines') || [
+            { name: 'Google Scholar', url: 'https://scholar.google.com/scholar?q={query}', enabled: true },
+            { name: 'PubMed', url: 'https://pubmed.ncbi.nlm.nih.gov/?term={query}', enabled: true },
+            { name: 'arXiv', url: 'https://arxiv.org/search/?query={query}', enabled: true }
+        ];
+
+        let searchHistory = storage.get('searchHistory') || [];
+
+        // ========== 弹窗管理 ==========
+        function openPopup(id) {
+            document.getElementById('overlay').classList.add('is-active');
+            document.getElementById(id).classList.add('is-active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePopup(id) {
+            document.getElementById('overlay').classList.remove('is-active');
+            document.getElementById(id).classList.remove('is-active');
+            document.body.style.overflow = '';
+        }
+
+        // ========== 搜索功能 ==========
+        function performSearch(query, isAcademic = false) {
+            if (!query) {
+                alert('请输入搜索关键词');
+                return;
+            }
+
+            // 添加到历史
+            if (!searchHistory.includes(query)) {
+                searchHistory.unshift(query);
+                searchHistory = searchHistory.slice(0, 20);
+                storage.set('searchHistory', searchHistory);
+                renderHistory();
+            }
+
+            // 执行搜索
+            const engineList = isAcademic ? academicEngines : engines;
+            const enabledEngines = engineList.filter(e => e.enabled);
+
+            enabledEngines.forEach(engine => {
+                const url = engine.url.replace('{query}', encodeURIComponent(query));
+                window.open(url, '_blank');
+            });
+        }
+
+        function performAcademicSearch() {
+            const query = document.getElementById('academicInput').value.trim();
+            performSearch(query, true);
+            closePopup('academicPopup');
+        }
+
+        // ========== 引擎管理 ==========
+        function renderEngines() {
+            const list = document.getElementById('engineList');
+            list.innerHTML = engines.map((engine, idx) => `
+                <div class="ls-engine-item">
+                    <input type="checkbox" ${engine.enabled ? 'checked' : ''} 
+                           onchange="toggleEngine(${idx})">
+                    <span class="ls-engine-item__name">${engine.name}</span>
+                    <span class="ls-engine-item__url">${engine.url}</span>
+                    <button class="ls-engine-item__delete" onclick="deleteEngine(${idx})">删除</button>
+                </div>
+            `).join('');
+
+            const academicList = document.getElementById('academicEngineList');
+            academicList.innerHTML = academicEngines.map((engine, idx) => `
+                <div class="ls-engine-item">
+                    <input type="checkbox" ${engine.enabled ? 'checked' : ''} 
+                           onchange="toggleAcademicEngine(${idx})">
+                    <span class="ls-engine-item__name">${engine.name}</span>
+                    <span class="ls-engine-item__url">${engine.url}</span>
+                </div>
+            `).join('');
+        }
+
+        function addEngine() {
+            const url = document.getElementById('newEngine').value.trim();
+            if (!url || !url.includes('{query}')) {
+                alert('请输入包含 {query} 的有效URL');
+                return;
+            }
+            const name = prompt('引擎名称：');
+            if (!name) return;
+
+            engines.push({ name, url, enabled: true });
+            storage.set('engines', engines);
+            renderEngines();
+            document.getElementById('newEngine').value = '';
+        }
+
+        function deleteEngine(idx) {
+            engines.splice(idx, 1);
+            storage.set('engines', engines);
+            renderEngines();
+        }
+
+        function toggleEngine(idx) {
+            engines[idx].enabled = !engines[idx].enabled;
+            storage.set('engines', engines);
+        }
+
+        function toggleAcademicEngine(idx) {
+            academicEngines[idx].enabled = !academicEngines[idx].enabled;
+            storage.set('academicEngines', academicEngines);
+        }
+
+        // ========== 搜索历史 ==========
+        function renderHistory() {
+            const container = document.getElementById('searchHistory');
+            if (searchHistory.length === 0) {
+                container.innerHTML = '<p style="color: #666; font-size: 0.9rem;">暂无搜索历史</p>';
+                return;
+            }
+
+            container.innerHTML = `
+                <p style="color: #666; font-size: 0.9rem; margin-bottom: 8px;">搜索历史：</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    ${searchHistory.slice(0, 10).map(item => `
+                        <span class="ls-history__item" onclick="document.getElementById('searchInput').value='${item}'">${item}</span>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // ========== 主题切换 ==========
+        function toggleTheme() {
+            document.body.classList.toggle('theme-dark');
+            const isDark = document.body.classList.contains('theme-dark');
+            storage.set('theme', isDark ? 'dark' : 'light');
+        }
+
+        // ========== 初始化 ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('✅ LightSearch 单文件版已加载');
+
+            // 加载主题
+            const theme = storage.get('theme');
+            if (theme === 'dark') {
+                document.body.classList.add('theme-dark');
+            }
+
+            // 渲染界面
+            renderEngines();
+            renderHistory();
+
+            // 绑定事件
+            document.getElementById('searchBtn').addEventListener('click', () => {
+                const query = document.getElementById('searchInput').value.trim();
+                performSearch(query);
+            });
+
+            document.getElementById('searchInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const query = e.target.value.trim();
+                    performSearch(query);
+                }
+            });
+
+            document.getElementById('settingsBtn').addEventListener('click', () => {
+                openPopup('settingsPopup');
+            });
+
+            document.getElementById('academicBtn').addEventListener('click', () => {
+                openPopup('academicPopup');
+            });
+
+            document.getElementById('themeBtn').addEventListener('click', toggleTheme);
+
+            document.getElementById('overlay').addEventListener('click', () => {
+                closePopup('settingsPopup');
+                closePopup('academicPopup');
+            });
+
+            // ESC 关闭弹窗
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closePopup('settingsPopup');
+                    closePopup('academicPopup');
+                }
+            });
+
+            console.log('✅ 所有功能已就绪');
+        });
+    </script>
+</body>
+</html>

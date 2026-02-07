@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LightSearch - Simple & Elegant Search Aggregator</title>
+    
+    <!-- Meta -->
+    <meta name="description" content="A simple and elegant search aggregator with multi-engine support">
+    <meta name="author" content="Sails">
+    <meta name="copyright" content="Copyright (C) 2025 LightSearch">
+    <meta name="license" content="GNU General Public License v3.0">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="./icon.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles-new.css">
+</head>
+<body>
+    <!-- 背景层 -->
+    <div id="backgroundLayer">
+        <video id="backgroundVideo" loop muted playsinline style="display: none;"></video>
+    </div>
+
+    <!-- 主搜索区域 -->
+    <div class="ls-search-container">
+        <h1 class="ls-logo" id="logo">LightSearch</h1>
+        
+        <div class="ls-search-box">
+            <input 
+                type="text" 
+                class="ls-search-input" 
+                id="searchInput"
+                placeholder="Enter search keywords..."
+                autocomplete="off"
+            >
+            <button class="ls-search-btn" id="searchBtn">Search</button>
+        </div>
+        
+        <!-- 搜索历史 -->
+        <div class="ls-history" id="historyContainer"></div>
+    </div>
+
+    <!-- 控制按钮 -->
+    <div class="ls-controls">
+        <button class="ls-btn" id="settingsBtn">Settings</button>
+        <button class="ls-btn" id="academicBtn">Academic Search</button>
+    </div>
+
+    <!-- 弹窗遮罩层 -->
+    <div class="ls-popup-overlay" id="popupOverlay"></div>
+
+    <!-- 设置弹窗 -->
+    <div class="ls-popup" id="settingsPopup">
+        <div class="ls-popup__header" id="settingsHeader">
+            <h2 class="ls-popup__title">Settings</h2>
+            <button class="ls-popup__close" onclick="closeSettings()">&times;</button>
+        </div>
+        
+        <div class="ls-popup__body">
+            <!-- 搜索引擎 -->
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title">Search Engines</h3>
+                <div class="ls-engine-list" id="engineList"></div>
+                <div style="display: flex; gap: 8px; margin-top: 12px;">
+                    <input 
+                        type="text" 
+                        class="ls-input" 
+                        id="newEngineInput"
+                        placeholder="Add engine (include {query})"
+                    >
+                    <button class="ls-btn ls-btn--primary" onclick="addEngine()">Add</button>
+                </div>
+            </div>
+
+            <!-- 个性化 -->
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title">Personalization</h3>
+                
+                <!-- 主题 -->
+                <div class="ls-settings__item">
+                    <span class="ls-settings__label">Theme</span>
+                    <select class="ls-select" id="themeSelect">
+                        <option value="classic">LightSearch Classic</option>
+                        <option value="liquid-glass">Liquid Glass</option>
+                    </select>
+                </div>
+
+                <!-- 暗黑模式 -->
+                <div class="ls-settings__item">
+                    <span class="ls-settings__label">Dark Mode</span>
+                    <label class="ls-switch">
+                        <input type="checkbox" id="darkModeSwitch">
+                        <span class="ls-switch__slider"></span>
+                    </label>
+                </div>
+
+                <!-- 强调色 -->
+                <div class="ls-settings__item" style="flex-direction: column; align-items: flex-start;">
+                    <span class="ls-settings__label" style="margin-bottom: 12px;">Accent Color</span>
+                    <div class="ls-color-picker">
+                        <div class="ls-color-item is-active" style="background-color: #4285f4;" onclick="setAccentColor('#4285f4')"></div>
+                        <div class="ls-color-item" style="background-color: #ea4335;" onclick="setAccentColor('#ea4335')"></div>
+                        <div class="ls-color-item" style="background-color: #34a853;" onclick="setAccentColor('#34a853')"></div>
+                        <div class="ls-color-item" style="background-color: #fbbc04;" onclick="setAccentColor('#fbbc04')"></div>
+                        <div class="ls-color-item" style="background-color: #ff6d00;" onclick="setAccentColor('#ff6d00')"></div>
+                        <div class="ls-color-item ls-color-item--custom" id="customColor1" onclick="pickCustomColor(1)">+</div>
+                        <div class="ls-color-item ls-color-item--custom" id="customColor2" onclick="pickCustomColor(2)">+</div>
+                        <div class="ls-color-item ls-color-item--custom" id="customColor3" onclick="pickCustomColor(3)">+</div>
+                        <div class="ls-color-item ls-color-item--custom" id="customColor4" onclick="pickCustomColor(4)">+</div>
+                        <div class="ls-color-item ls-color-item--custom" id="customColor5" onclick="pickCustomColor(5)">+</div>
+                    </div>
+                    <input type="color" id="colorPicker" style="display: none;">
+                </div>
+
+                <!-- 背景 -->
+                <div class="ls-settings__item" style="flex-direction: column; align-items: flex-start;">
+                    <span class="ls-settings__label" style="margin-bottom: 12px;">Background</span>
+                    <div style="display: flex; gap: 8px; width: 100%;">
+                        <input type="file" id="bgImageInput" accept="image/*" style="display: none;">
+                        <input type="file" id="bgVideoInput" accept="video/*" style="display: none;">
+                        <button class="ls-btn" onclick="document.getElementById('bgImageInput').click()">Upload Image</button>
+                        <button class="ls-btn" onclick="document.getElementById('bgVideoInput').click()">Upload Video</button>
+                        <button class="ls-btn ls-btn--secondary" onclick="clearBackground()">Clear</button>
+                    </div>
+                </div>
+
+                <!-- 毛玻璃效果 -->
+                <div class="ls-settings__item">
+                    <span class="ls-settings__label">Blur Effect: <span id="blurValue">0</span>px</span>
+                    <input type="range" class="ls-slider" id="blurSlider" min="0" max="50" value="0">
+                </div>
+
+                <!-- 视频设置 -->
+                <div id="videoSettings" style="display: none;">
+                    <div class="ls-settings__item">
+                        <span class="ls-settings__label">Video Volume: <span id="volumeValue">50</span>%</span>
+                        <input type="range" class="ls-slider" id="volumeSlider" min="0" max="100" value="50">
+                    </div>
+                    <div class="ls-settings__item">
+                        <span class="ls-settings__label">Video Quality</span>
+                        <select class="ls-select" id="videoQuality">
+                            <option value="auto">Auto</option>
+                            <option value="1080p">1080p</option>
+                            <option value="720p">720p</option>
+                            <option value="480p">480p</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Logo设置 -->
+                <div class="ls-settings__item">
+                    <span class="ls-settings__label">Logo Typing Animation</span>
+                    <label class="ls-switch">
+                        <input type="checkbox" id="logoTypingSwitch">
+                        <span class="ls-switch__slider"></span>
+                    </label>
+                </div>
+
+                <div class="ls-settings__item">
+                    <span class="ls-settings__label">Custom Logo</span>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="file" id="logoInput" accept="image/*" style="display: none;">
+                        <button class="ls-btn" onclick="document.getElementById('logoInput').click()">Upload</button>
+                        <button class="ls-btn ls-btn--secondary" onclick="clearLogo()">Clear</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 语言 -->
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title">Language</h3>
+                <select class="ls-select" id="langSelect" style="width: 100%;">
+                    <option value="en">English</option>
+                    <option value="zh">简体中文</option>
+                    <option value="ja">日本語</option>
+                    <option value="ko">한국어</option>
+                    <option value="ru">Русский</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 弹窗底部按钮 -->
+        <div class="ls-popup__footer">
+            <button class="ls-btn ls-btn--secondary" onclick="closeSettings()">Cancel</button>
+            <button class="ls-btn ls-btn--primary" onclick="saveSettings()">Save</button>
+        </div>
+    </div>
+
+    <!-- 学术搜索弹窗 -->
+    <div class="ls-popup" id="academicPopup">
+        <div class="ls-popup__header" id="academicHeader">
+            <h2 class="ls-popup__title">Academic Search</h2>
+            <button class="ls-popup__close" onclick="closePopup('academicPopup')">&times;</button>
+        </div>
+        
+        <div class="ls-popup__body">
+            <div class="ls-search-box">
+                <input 
+                    type="text" 
+                    class="ls-search-input" 
+                    id="academicInput"
+                    placeholder="Enter academic keywords..."
+                >
+                <button class="ls-search-btn" onclick="performAcademicSearch()">Search</button>
+            </div>
+
+            <div style="margin: 20px 0;">
+                <label style="margin-right: 15px;">
+                    <span>Publication Time:</span>
+                    <select class="ls-select" id="timeFilter" style="margin-left: 8px;">
+                        <option value="any">Any Time</option>
+                        <option value="1">Past Year</option>
+                        <option value="5">Past 5 Years</option>
+                        <option value="10">Past 10 Years</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="ls-settings__section">
+                <h3 class="ls-settings__section-title">Academic Engines</h3>
+                <div class="ls-engine-list" id="academicEngineList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script-new.js"></script>
+</body>
+</html>

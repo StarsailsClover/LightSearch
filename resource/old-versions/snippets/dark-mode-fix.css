@@ -1,0 +1,9 @@
+/* 在CSS的暗黑模式部分添加 */
+
+body.theme-dark input[type="text"],
+body.theme-dark textarea,
+body.theme-dark select {
+    background-color: var(--ls-card-bg);
+    color: var(--ls-text);
+    border-color: var(--ls-border);
+}

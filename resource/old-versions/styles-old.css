@@ -1,0 +1,289 @@
+/* 内联所有CSS - 无需外部文件 */
+        :root {
+            --ls-bg: #ffffff;
+            --ls-text: #000000;
+            --ls-accent: #4285f4;
+            --ls-card-bg: #ffffff;
+            --ls-border: #ddd;
+            --ls-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --ls-spacing-sm: 8px;
+            --ls-spacing-md: 16px;
+            --ls-spacing-lg: 24px;
+            --ls-radius-sm: 4px;
+            --ls-radius-md: 8px;
+            --ls-radius-xl: 24px;
+            --ls-transition-fast: 0.15s ease;
+            --ls-transition-normal: 0.25s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: var(--ls-bg);
+            color: var(--ls-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color var(--ls-transition-normal);
+        }
+
+        .ls-search-container {
+            margin-top: 15vh;
+            text-align: center;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .ls-logo {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: var(--ls-spacing-lg);
+        }
+
+        .ls-search-box {
+            display: flex;
+            gap: var(--ls-spacing-sm);
+            margin: var(--ls-spacing-lg) 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .ls-search-input {
+            flex: 1;
+            min-width: 300px;
+            max-width: 600px;
+            padding: 15px 20px;
+            border: 2px solid var(--ls-border);
+            border-radius: var(--ls-radius-xl);
+            font-size: 1.1rem;
+            transition: border-color var(--ls-transition-fast);
+        }
+
+        .ls-search-input:focus {
+            outline: none;
+            border-color: var(--ls-accent);
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+        }
+
+        .ls-search-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: var(--ls-radius-xl);
+            background-color: var(--ls-accent);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--ls-transition-fast);
+        }
+
+        .ls-search-btn:hover {
+            background-color: #357ae8;
+            transform: translateY(-1px);
+        }
+
+        .ls-history {
+            margin: var(--ls-spacing-lg) 0;
+            padding: var(--ls-spacing-md);
+            min-height: 40px;
+        }
+
+        .ls-history__item {
+            display: inline-block;
+            margin: 4px;
+            padding: 8px 16px;
+            background-color: rgba(66, 133, 244, 0.1);
+            border: 1px solid rgba(66, 133, 244, 0.2);
+            border-radius: var(--ls-radius-xl);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all var(--ls-transition-fast);
+        }
+
+        .ls-history__item:hover {
+            background-color: rgba(66, 133, 244, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .ls-controls {
+            position: fixed;
+            top: var(--ls-spacing-lg);
+            right: var(--ls-spacing-lg);
+            display: flex;
+            gap: var(--ls-spacing-sm);
+            flex-wrap: wrap;
+        }
+
+        .ls-btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: var(--ls-radius-md);
+            background-color: white;
+            box-shadow: var(--ls-shadow);
+            cursor: pointer;
+            transition: all var(--ls-transition-fast);
+        }
+
+        .ls-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 弹窗样式 */
+        .ls-popup-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--ls-transition-normal);
+        }
+
+        .ls-popup-overlay.is-active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .ls-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all var(--ls-transition-normal);
+        }
+
+        .ls-popup.is-active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .ls-popup__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--ls-spacing-lg);
+            border-bottom: 1px solid var(--ls-border);
+        }
+
+        .ls-popup__close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.6;
+        }
+
+        .ls-popup__close:hover {
+            opacity: 1;
+        }
+
+        .ls-popup__body {
+            padding: var(--ls-spacing-lg);
+        }
+
+        .ls-settings__section {
+            margin-bottom: var(--ls-spacing-lg);
+        }
+
+        .ls-settings__section-title {
+            font-size: 1.1rem;
+            margin-bottom: var(--ls-spacing-md);
+        }
+
+        .ls-engine-item {
+            display: flex;
+            align-items: center;
+            gap: var(--ls-spacing-sm);
+            padding: var(--ls-spacing-md);
+            margin-bottom: var(--ls-spacing-sm);
+            background-color: rgba(0, 0, 0, 0.02);
+            border-radius: var(--ls-radius-sm);
+        }
+
+        .ls-engine-item__name {
+            font-weight: 500;
+            min-width: 100px;
+        }
+
+        .ls-engine-item__url {
+            flex: 1;
+            font-size: 0.85rem;
+            color: #666;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .ls-engine-item__delete {
+            padding: 6px 12px;
+            border: none;
+            background-color: #ff4444;
+            color: white;
+            border-radius: var(--ls-radius-sm);
+            cursor: pointer;
+        }
+
+        .ls-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--ls-border);
+            border-radius: var(--ls-radius-sm);
+        }
+
+        .ls-select {
+            padding: 8px 12px;
+            border: 1px solid var(--ls-border);
+            border-radius: var(--ls-radius-sm);
+        }
+
+        /* 深色主题 */
+        body.theme-dark {
+            --ls-bg: #121212;
+            --ls-text: #ffffff;
+            --ls-card-bg: #1e1e1e;
+            --ls-border: #333;
+        }
+
+        body.theme-dark .ls-search-input,
+        body.theme-dark .ls-popup,
+        body.theme-dark .ls-btn {
+            background-color: #1e1e1e;
+            color: white;
+            border-color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .ls-search-box {
+                flex-direction: column;
+            }
+            .ls-search-input {
+                min-width: 100%;
+            }
+        }
+/* 暗黑模式输入框修复 */
+body.theme-dark input[type="text"],
+body.theme-dark textarea,
+body.theme-dark select {
+    background-color: var(--ls-card-bg);
+    color: var(--ls-text);
+    border-color: var(--ls-border);
+}

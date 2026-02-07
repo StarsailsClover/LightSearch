@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "LightSearch",
+    "tagline": "简洁优雅的聚合搜索引擎"
+  },
+  "search": {
+    "placeholder": "输入搜索关键词...",
+    "button": "搜索",
+    "history": "搜索历史",
+    "noHistory": "暂无搜索历史",
+    "academic": "学术搜索",
+    "academicPlaceholder": "输入学术关键词..."
+  },
+  "settings": {
+    "title": "设置",
+    "close": "关闭",
+    "engines": {
+      "title": "搜索引擎",
+      "add": "添加引擎",
+      "addPlaceholder": "添加引擎（包含 {query}）",
+      "delete": "删除",
+      "academic": "学术引擎"
+    },
+    "personalization": {
+      "title": "个性化",
+      "theme": "主题",
+      "themeAuto": "跟随系统",
+      "themeClassic": "LightSearch Classic",
+      "themeClassicDark": "经典深色",
+      "themeLiquidGlass": "Liquid Glass",
+      "themeGreen": "护眼绿",
+      "background": "背景",
+      "backgroundUpload": "上传背景",
+      "backgroundClear": "清除背景",
+      "backgroundBlur": "模糊度"
+    },
+    "language": {
+      "title": "语言",
+      "auto": "自动检测",
+      "zh": "简体中文",
+      "en": "English",
+      "ja": "日本語",
+      "ko": "한국어",
+      "ru": "Русский"
+    },
+    "advanced": {
+      "title": "高级",
+      "privacy": "隐私保护",
+      "blockTrackers": "拦截追踪器",
+      "proxySearch": "使用代理搜索",
+      "randomUA": "随机 User-Agent"
+    },
+    "about": {
+      "title": "关于",
+      "license": "遵循 GPLv3 协议开源",
+      "github": "GitHub 仓库",
+      "issues": "提交问题",
+      "feedback": "问题反馈"
+    }
+  },
+  "academic": {
+    "title": "学术搜索",
+    "filters": {
+      "time": "发表时间",
+      "timeAny": "不限",
+      "time1y": "近1年",
+      "time5y": "近5年",
+      "time10y": "近10年",
+      "openAccess": "仅开放获取"
+    }
+  },
+  "commandPalette": {
+    "placeholder": "输入命令或搜索...",
+    "noResults": "未找到结果",
+    "categories": {
+      "search": "搜索",
+      "settings": "设置",
+      "navigation": "导航"
+    }
+  },
+  "comparison": {
+    "title": "搜索对比",
+    "enable": "启用对比模式",
+    "selectEngines": "选择要对比的引擎",
+    "sideBySide": "左右分栏",
+    "tabs": "标签页"
+  },
+  "messages": {
+    "engineAdded": "引擎添加成功",
+    "engineDeleted": "引擎已删除",
+    "invalidEngine": "请包含 {query} 作为关键词占位符",
+    "emptySearch": "请输入搜索关键词",
+    "themeChanged": "主题已切换为 {theme}",
+    "languageChanged": "语言已切换为 {language}"
+  }
+}

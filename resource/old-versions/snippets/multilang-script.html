@@ -1,0 +1,144 @@
+// 在 </body> 标签之前添加这段脚本
+
+<script>
+// ========== 多语言支持 ==========
+const LANG_DATA = {
+    en: {
+        searchPlaceholder: 'Enter search keywords...',
+        searchButton: 'Search',
+        settingsButton: 'Settings',
+        academicButton: 'Academic Search',
+        themeButton: 'Toggle Theme',
+        historyTitle: 'Search History',
+        noHistory: 'No search history',
+        settingsTitle: 'Settings',
+        academicTitle: 'Academic Search',
+        closeButton: 'Close',
+        enginesTitle: 'Search Engines',
+        addEngine: 'Add',
+        deleteEngine: 'Delete',
+        languageTitle: 'Language'
+    },
+    zh: {
+        searchPlaceholder: '输入搜索关键词...',
+        searchButton: '搜索',
+        settingsButton: '设置',
+        academicButton: '学术搜索',
+        themeButton: '切换主题',
+        historyTitle: '搜索历史',
+        noHistory: '暂无搜索历史',
+        settingsTitle: '设置',
+        academicTitle: '学术搜索',
+        closeButton: '关闭',
+        enginesTitle: '搜索引擎',
+        addEngine: '添加',
+        deleteEngine: '删除',
+        languageTitle: '语言'
+    },
+    ja: {
+        searchPlaceholder: '検索キーワードを入力...',
+        searchButton: '検索',
+        settingsButton: '設定',
+        academicButton: '学術検索',
+        themeButton: 'テーマ切替',
+        historyTitle: '検索履歴',
+        noHistory: '検索履歴がありません',
+        settingsTitle: '設定',
+        academicTitle: '学術検索',
+        closeButton: '閉じる',
+        enginesTitle: '検索エンジン',
+        addEngine: '追加',
+        deleteEngine: '削除',
+        languageTitle: '言語'
+    },
+    ko: {
+        searchPlaceholder: '검색 키워드 입력...',
+        searchButton: '검색',
+        settingsButton: '설정',
+        academicButton: '학술 검색',
+        themeButton: '테마 전환',
+        historyTitle: '검색 기록',
+        noHistory: '검색 기록이 없습니다',
+        settingsTitle: '설정',
+        academicTitle: '학술 검색',
+        closeButton: '닫기',
+        enginesTitle: '검색 엔진',
+        addEngine: '추가',
+        deleteEngine: '삭제',
+        languageTitle: '언어'
+    },
+    ru: {
+        searchPlaceholder: 'Введите ключевые слова...',
+        searchButton: 'Поиск',
+        settingsButton: 'Настройки',
+        academicButton: 'Академический поиск',
+        themeButton: 'Переключить тему',
+        historyTitle: 'История поиска',
+        noHistory: 'Нет истории поиска',
+        settingsTitle: 'Настройки',
+        academicTitle: 'Академический поиск',
+        closeButton: 'Закрыть',
+        enginesTitle: 'Поисковые системы',
+        addEngine: 'Добавить',
+        deleteEngine: 'Удалить',
+        languageTitle: 'Язык'
+    }
+};
+
+let currentLang = localStorage.getItem('ls-language') || navigator.language.slice(0, 2) || 'en';
+if (!LANG_DATA[currentLang]) currentLang = 'en';
+
+function t(key) {
+    return LANG_DATA[currentLang]?.[key] || LANG_DATA.en[key] || key;
+}
+
+function applyLanguage() {
+    document.title = 'LightSearch - ' + (currentLang === 'zh' ? '简洁优雅的聚合搜索引擎' : 'Simple & Elegant Search Aggregator');
+    document.documentElement.lang = currentLang === 'zh' ? 'zh-CN' : currentLang;
+    
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) searchInput.placeholder = t('searchPlaceholder');
+    
+    const searchBtn = document.getElementById('searchBtn');
+    if (searchBtn) searchBtn.textContent = t('searchButton');
+    
+    const settingsBtn = document.getElementById('settingsBtn');
+    if (settingsBtn) settingsBtn.textContent = t('settingsButton');
+    
+    const academicBtn = document.getElementById('academicBtn');
+    if (academicBtn) academicBtn.textContent = t('academicButton');
+    
+    const themeBtn = document.getElementById('themeBtn');
+    if (themeBtn) themeBtn.textContent = t('themeButton');
+    
+    const settingsTitle = document.querySelector('#settingsPopup h2');
+    if (settingsTitle) settingsTitle.textContent = t('settingsTitle');
+    
+    const academicTitle = document.querySelector('#academicPopup h2');
+    if (academicTitle) academicTitle.textContent = t('academicTitle');
+    
+    const academicInput = document.getElementById('academicInput');
+    if (academicInput) academicInput.placeholder = t('searchPlaceholder');
+    
+    const langSelect = document.getElementById('langSelect');
+    if (langSelect) langSelect.value = currentLang;
+    
+    // 重新渲染历史记录以更新文本
+    if (typeof renderHistory === 'function') {
+        renderHistory();
+    }
+}
+
+function switchLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('ls-language', lang);
+    applyLanguage();
+}
+
+// 页面加载时应用语言
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', applyLanguage);
+} else {
+    applyLanguage();
+}
+</script>

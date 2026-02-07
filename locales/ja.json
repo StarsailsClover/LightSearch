@@ -1,0 +1,96 @@
+{
+  "app": {
+    "name": "LightSearch",
+    "tagline": "シンプルでエレガントな検索アグリゲーター"
+  },
+  "search": {
+    "placeholder": "検索キーワードを入力...",
+    "button": "検索",
+    "history": "検索履歴",
+    "noHistory": "検索履歴がありません",
+    "academic": "学術検索",
+    "academicPlaceholder": "学術キーワードを入力..."
+  },
+  "settings": {
+    "title": "設定",
+    "close": "閉じる",
+    "engines": {
+      "title": "検索エンジン",
+      "add": "エンジンを追加",
+      "addPlaceholder": "エンジンを追加（{query}を含む）",
+      "delete": "削除",
+      "academic": "学術エンジン"
+    },
+    "personalization": {
+      "title": "パーソナライゼーション",
+      "theme": "テーマ",
+      "themeAuto": "システムに従う",
+      "themeClassic": "LightSearch Classic",
+      "themeClassicDark": "クラシックダーク",
+      "themeLiquidGlass": "Liquid Glass",
+      "themeGreen": "目に優しい",
+      "background": "背景",
+      "backgroundUpload": "背景をアップロード",
+      "backgroundClear": "背景をクリア",
+      "backgroundBlur": "ぼかしレベル"
+    },
+    "language": {
+      "title": "言語",
+      "auto": "自動検出",
+      "zh": "简体中文",
+      "en": "English",
+      "ja": "日本語",
+      "ko": "한국어",
+      "ru": "Русский"
+    },
+    "advanced": {
+      "title": "詳細設定",
+      "privacy": "プライバシー保護",
+      "blockTrackers": "トラッカーをブロック",
+      "proxySearch": "プロキシを使用",
+      "randomUA": "ランダムUser-Agent"
+    },
+    "about": {
+      "title": "について",
+      "license": "GPLv3ライセンス",
+      "github": "GitHubリポジトリ",
+      "issues": "問題を報告",
+      "feedback": "フィードバック"
+    }
+  },
+  "academic": {
+    "title": "学術検索",
+    "filters": {
+      "time": "公開時期",
+      "timeAny": "すべて",
+      "time1y": "過去1年",
+      "time5y": "過去5年",
+      "time10y": "過去10年",
+      "openAccess": "オープンアクセスのみ"
+    }
+  },
+  "commandPalette": {
+    "placeholder": "コマンドまたは検索を入力...",
+    "noResults": "結果が見つかりません",
+    "categories": {
+      "search": "検索",
+      "settings": "設定",
+      "navigation": "ナビゲーション"
+    }
+  },
+  "comparison": {
+    "title": "検索比較",
+    "enable": "比較モードを有効化",
+    "selectEngines": "比較するエンジンを選択",
+    "sideBySide": "並べて表示",
+    "tabs": "タブ"
+  },
+  "messages": {
+    "engineAdded": "エンジンが追加されました",
+    "engineDeleted": "エンジンが削除されました",
+    "invalidEngine": "{query}をキーワードプレースホルダーとして含めてください",
+    "emptySearch": "検索キーワードを入力してください",
+    "themeChanged": "テーマが{theme}に変更されました",
+    "languageChanged": "言語が{language}に変更されました"
+  }
+}

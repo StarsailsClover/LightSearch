@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LightSearch - Debug Mode</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="./icon.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles-new.css">
+    <link rel="stylesheet" href="enhanced-styles.css">
+    
+    <style>
+        /* 调试面板样式 */
+        #debugPanel {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 400px;
+            max-height: 50vh;
+            background: rgba(0, 0, 0, 0.95);
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            padding: 15px;
+            overflow-y: auto;
+            z-index: 99999;
+            border-top-left-radius: 8px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+        
+        #debugPanel.minimized {
+            transform: translateY(calc(100% - 40px));
+        }
+        
+        #debugPanel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #00ff00;
+            cursor: pointer;
+        }
+        
+        #debugPanel-header h3 {
+            margin: 0;
+            font-size: 14px;
+            color: #00ff00;
+        }
+        
+        #debugPanel-toggle {
+            background: none;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 4px 8px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 10px;
+        }
+        
+        #debugPanel-toggle:hover {
+            background: #00ff00;
+            color: #000;
+        }
+        
+        .debug-section {
+            margin-bottom: 15px;
+        }
+        
+        .debug-section-title {
+            color: #ffff00;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .debug-item {
+            margin: 3px 0;
+            padding: 3px 0;
+        }
+        
+        .debug-label {
+            color: #00aaff;
+        }
+        
+        .debug-value {
+            color: #00ff00;
+        }
+        
+        .debug-error {
+            color: #ff0000;
+        }
+        
+        .debug-warning {
+            color: #ffaa00;
+        }
+        
+        .debug-success {
+            color: #00ff00;
+        }
+        
+        .debug-button {
+            background: #00ff00;
+            color: #000;
+            border: none;
+            padding: 6px 12px;
+            margin: 4px 4px 4px 0;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        
+        .debug-button:hover {
+            background: #00cc00;
+        }
+        
+        .debug-log {
+            max-height: 200px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 8px;
+        }
+        
+        .debug-log-item {
+            margin: 2px 0;
+            font-size: 11px;
+        }
+        
+        .debug-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .debug-stat {
+            background: rgba(0, 255, 0, 0.1);
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #00ff00;
+        }
+        
+        .debug-stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00ff00;
+        }
+        
+        .debug-stat-label {
+            font-size: 10px;
+            color: #00aaff;
+            margin-top: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景层 -->
+    <div id="backgroundLayer">
+        <video id="backgroundVideo" loop muted playsinline style="display: none;"></video>
+    </div>
+
+    <!-- 主搜索区域 -->
+    <div class="ls-search-container">
+        <h1 class="ls-logo" id="logo">LightSearch</h1>
+        
+        <div class="ls-search-box">
+            <input 
+                type="text" 
+                class="ls-search-input" 
+                id="searchInput"
+                placeholder="Enter search keywords..."
+                autocomplete="off"
+            >
+            <button class="ls-search-btn" id="searchBtn">Search</button>
+        </div>
+        
+        <!-- 搜索历史 -->
+        <div class="ls-history" id="historyContainer"></div>
+    </div>
+
+    <!-- 控制按钮 -->
+    <div class="ls-controls">
+        <button class="ls-btn" id="settingsBtn">Settings</button>
+        <button class="ls-btn" id="academicBtn">Academic Search</button>
+        <button class="ls-btn" id="debugBtn" style="background: #ff0000; color: white;">🐛 Debug</button>
+    </div>
+
+    <!-- 弹窗遮罩层 -->
+    <div class="ls-popup-overlay" id="popupOverlay"></div>
+
+    <!-- 设置弹窗（与 index.html 相同，这里省略） -->
+    <!-- ... -->
+
+    <!-- 调试面板 -->
+    <div id="debugPanel">
+        <div id="debugPanel-header" onclick="toggleDebugPanel()">
+            <h3>🐛 Debug Panel</h3>
+            <button id="debugPanel-toggle">Minimize</button>
+        </div>
+        
+        <div id="debugPanel-content">
+            <!-- 系统信息 -->
+            <div class="debug-section">
+                <div class="debug-section-title">System Info</div>
+                <div class="debug-item">
+                    <span class="debug-label">Browser:</span>
+                    <span class="debug-value" id="debug-browser"></span>
+                </div>
+                <div class="debug-item">
+                    <span class="debug-label">Screen:</span>
+                    <span class="debug-value" id="debug-screen"></span>
+                </div>
+                <div class="debug-item">
+                    <span class="debug-label">DPR:</span>
+                    <span class="debug-value" id="debug-dpr"></span>
+                </div>
+                <div class="debug-item">
+                    <span class="debug-label">WebGL:</span>
+                    <span class="debug-value" id="debug-webgl"></span>
+                </div>
+            </div>
+            
+            <!-- 应用状态 -->
+            <div class="debug-section">
+                <div class="debug-section-title">App State</div>
+                <div class="debug-stats">
+                    <div class="debug-stat">
+                        <div class="debug-stat-value" id="debug-engines-count">0</div>
+                        <div class="debug-stat-label">Engines</div>
+                    </div>
+                    <div class="debug-stat">
+                        <div class="debug-stat-value" id="debug-history-count">0</div>
+                        <div class="debug-stat-label">History</div>
+                    </div>
+                    <div class="debug-stat">
+                        <div class="debug-stat-value" id="debug-errors-count">0</div>
+                        <div class="debug-stat-label">Errors</div>
+                    </div>
+                    <div class="debug-stat">
+                        <div class="debug-stat-value" id="debug-theme">-</div>
+                        <div class="debug-stat-label">Theme</div>
+                    </div>
+                </div>
+                <div class="debug-item" style="margin-top: 8px;">
+                    <span class="debug-label">Language:</span>
+                    <span class="debug-value" id="debug-lang"></span>
+                </div>
+                <div class="debug-item">
+                    <span class="debug-label">Dark Mode:</span>
+                    <span class="debug-value" id="debug-darkmode"></span>
+                </div>
+            </div>
+            
+            <!-- 性能监控 -->
+            <div class="debug-section">
+                <div class="debug-section-title">Performance</div>
+                <div class="debug-item">
+                    <span class="debug-label">FPS:</span>
+                    <span class="debug-value" id="debug-fps">0</span>
+                </div>
+                <div class="debug-item">
+                    <span class="debug-label">Memory:</span>
+                    <span class="debug-value" id="debug-memory">N/A</span>
+                </div>
+            </div>
+            
+            <!-- 快速操作 -->
+            <div class="debug-section">
+                <div class="debug-section-title">Quick Actions</div>
+                <button class="debug-button" onclick="debugClearStorage()">Clear Storage</button>
+                <button class="debug-button" onclick="debugReload()">Reload</button>
+                <button class="debug-button" onclick="debugExportSettings()">Export</button>
+                <button class="debug-button" onclick="debugShowErrors()">Show Errors</button>
+                <button class="debug-button" onclick="debugTestSearch()">Test Search</button>
+                <button class="debug-button" onclick="debugToggleTheme()">Toggle Theme</button>
+            </div>
+            
+            <!-- 控制台日志 -->
+            <div class="debug-section">
+                <div class="debug-section-title">Console Log</div>
+                <div class="debug-log" id="debug-console"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script-new.js"></script>
+    <script src="enhanced-features.js"></script>
+    <script src="html-text-updater.js"></script>
+    
+    <script>
+        // 调试面板功能
+        let debugPanelMinimized = false;
+        let debugLogs = [];
+        let lastFrameTime = performance.now();
+        let frameCount = 0;
+        let fps = 0;
+        
+        function toggleDebugPanel() {
+            debugPanelMinimized = !debugPanelMinimized;
+            const panel = document.getElementById('debugPanel');
+            const toggle = document.getElementById('debugPanel-toggle');
+            
+            if (debugPanelMinimized) {
+                panel.classList.add('minimized');
+                toggle.textContent = 'Maximize';
+            } else {
+                panel.classList.remove('minimized');
+                toggle.textContent = 'Minimize';
+            }
+        }
+        
+        function updateDebugInfo() {
+            // 系统信息
+            document.getElementById('debug-browser').textContent = navigator.userAgent.split(' ').pop();
+            document.getElementById('debug-screen').textContent = `${window.innerWidth}x${window.innerHeight}`;
+            document.getElementById('debug-dpr').textContent = window.devicePixelRatio || 1;
+            
+            // WebGL 支持
+            const canvas = document.createElement('canvas');
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            document.getElementById('debug-webgl').textContent = gl ? '✓ Supported' : '✗ Not supported';
+            
+            // 应用状态
+            if (typeof settings !== 'undefined') {
+                document.getElementById('debug-engines-count').textContent = settings.engines?.length || 0;
+                document.getElementById('debug-history-count').textContent = settings.history?.length || 0;
+                document.getElementById('debug-theme').textContent = settings.theme || 'classic';
+                document.getElementById('debug-lang').textContent = currentLang || 'en';
+                document.getElementById('debug-darkmode').textContent = settings.darkMode ? 'ON' : 'OFF';
+            }
+            
+            // 错误数量
+            if (typeof ErrorMonitor !== 'undefined') {
+                document.getElementById('debug-errors-count').textContent = ErrorMonitor.getErrors().length;
+            }
+            
+            // 内存使用（如果可用）
+            if (performance.memory) {
+                const used = (performance.memory.usedJSHeapSize / 1048576).toFixed(2);
+                const total = (performance.memory.totalJSHeapSize / 1048576).toFixed(2);
+                document.getElementById('debug-memory').textContent = `${used} / ${total} MB`;
+            }
+        }
+        
+        function updateFPS() {
+            frameCount++;
+            const now = performance.now();
+            const delta = now - lastFrameTime;
+            
+            if (delta >= 1000) {
+                fps = Math.round((frameCount * 1000) / delta);
+                document.getElementById('debug-fps').textContent = fps;
+                frameCount = 0;
+                lastFrameTime = now;
+            }
+            
+            requestAnimationFrame(updateFPS);
+        }
+        
+        function addDebugLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logItem = `[${timestamp}] ${message}`;
+            debugLogs.unshift(logItem);
+            
+            if (debugLogs.length > 50) {
+                debugLogs.pop();
+            }
+            
+            const consoleEl = document.getElementById('debug-console');
+            if (consoleEl) {
+                consoleEl.innerHTML = debugLogs.map(log => 
+                    `<div class="debug-log-item ${type}">${log}</div>`
+                ).join('');
+            }
+        }
+        
+        // 拦截 console 方法
+        const originalConsoleLog = console.log;
+        const originalConsoleError = console.error;
+        const originalConsoleWarn = console.warn;
+        
+        console.log = function(...args) {
+            addDebugLog(args.join(' '), 'debug-success');
+            originalConsoleLog.apply(console, args);
+        };
+        
+        console.error = function(...args) {
+            addDebugLog(args.join(' '), 'debug-error');
+            originalConsoleError.apply(console, args);
+        };
+        
+        console.warn = function(...args) {
+            addDebugLog(args.join(' '), 'debug-warning');
+            originalConsoleWarn.apply(console, args);
+        };
+        
+        // 快速操作函数
+        function debugClearStorage() {
+            if (confirm('Clear all local storage?')) {
+                localStorage.clear();
+                addDebugLog('Local storage cleared', 'debug-success');
+                setTimeout(() => location.reload(), 500);
+            }
+        }
+        
+        function debugReload() {
+            location.reload();
+        }
+        
+        function debugExportSettings() {
+            const data = {
+                settings: settings,
+                timestamp: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `lightsearch-settings-${Date.now()}.json`;
+            a.click();
+            addDebugLog('Settings exported', 'debug-success');
+        }
+        
+        function debugShowErrors() {
+            if (typeof ErrorMonitor !== 'undefined') {
+                const errors = ErrorMonitor.getErrorLog();
+                console.table(errors);
+                addDebugLog(`Showing ${errors.length} errors in console`, 'debug-success');
+            }
+        }
+        
+        function debugTestSearch() {
+            const testQuery = 'test search ' + Date.now();
+            document.getElementById('searchInput').value = testQuery;
+            addDebugLog(`Test search: ${testQuery}`, 'debug-success');
+        }
+        
+        function debugToggleTheme() {
+            if (typeof settings !== 'undefined') {
+                settings.theme = settings.theme === 'classic' ? 'liquid-glass' : 'classic';
+                applyTheme(settings.theme);
+                addDebugLog(`Theme switched to: ${settings.theme}`, 'debug-success');
+                updateDebugInfo();
+            }
+        }
+        
+        // 初始化调试面板
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDebugInfo();
+            updateFPS();
+            
+            // 每秒更新一次信息
+            setInterval(updateDebugInfo, 1000);
+            
+            addDebugLog('Debug panel initialized', 'debug-success');
+            
+            // 调试按钮
+            document.getElementById('debugBtn')?.addEventListener('click', () => {
+                const panel = document.getElementById('debugPanel');
+                panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+        
+        console.log('🐛 Debug mode activated');
+    </script>
+</body>
+</html>
