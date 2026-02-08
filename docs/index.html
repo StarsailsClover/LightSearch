@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LightSearch 文档中心</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="../icon.png" type="image/png">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="nav-logo">
+                <img src="../icon.png" alt="LightSearch">
+                <span>LightSearch 文档</span>
+            </a>
+            <div class="nav-search">
+                <input type="text" id="searchInput" placeholder="搜索文档..." />
+                <span class="search-shortcut">Ctrl K</span>
+            </div>
+            <div class="nav-links">
+                <a href="../index.html">主页</a>
+                <a href="../Introducing/index.html">介绍</a>
+                <a href="editor/index.html">编辑器</a>
+                <a href="https://github.com/StarsailsClover/LightSearch" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="docs-container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>文档导航</h3>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="sidebar-content" id="sidebarContent">
+                <!-- 动态加载 -->
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <article class="doc-article" id="docContent">
+                <h1>欢迎来到 LightSearch 文档中心</h1>
+                <p class="lead">在这里你可以找到 LightSearch 的完整使用文档、开发指南和最佳实践。</p>
+                
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <div class="card-icon">📚</div>
+                        <h3>快速开始</h3>
+                        <p>了解如何快速上手使用 LightSearch</p>
+                        <a href="#" class="card-link" data-doc="getting-started">查看文档 →</a>
+                    </div>
+                    <div class="feature-card">
+                        <div class="card-icon">⚙️</div>
+                        <h3>配置指南</h3>
+                        <p>自定义搜索引擎和主题设置</p>
+                        <a href="#" class="card-link" data-doc="configuration">查看文档 →</a>
+                    </div>
+                    <div class="feature-card">
+                        <div class="card-icon">🎨</div>
+                        <h3>主题开发</h3>
+                        <p>创建自己的 LightSearch 主题</p>
+                        <a href="#" class="card-link" data-doc="theme-development">查看文档 →</a>
+                    </div>
+                    <div class="feature-card">
+                        <div class="card-icon">🔌</div>
+                        <h3>API 文档</h3>
+                        <p>了解 LightSearch 的 API 接口</p>
+                        <a href="#" class="card-link" data-doc="api">查看文档 →</a>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h2>关于文档系统</h2>
+                    <p>LightSearch 文档系统采用 Markdown 格式，支持：</p>
+                    <ul>
+                        <li>✅ Markdown 语法高亮</li>
+                        <li>✅ 代码块语法高亮</li>
+                        <li>✅ 图片预览和缩放</li>
+                        <li>✅ 目录自动生成</li>
+                        <li>✅ 全文搜索</li>
+                        <li>✅ 响应式设计</li>
+                    </ul>
+                </div>
+
+                <div class="cta-section">
+                    <h2>开始编写文档</h2>
+                    <p>使用我们的在线编辑器，轻松创建和编辑文档</p>
+                    <a href="editor/index.html" class="btn-primary">打开编辑器</a>
+                </div>
+            </article>
+
+            <!-- 目录 -->
+            <aside class="toc" id="toc">
+                <h4>目录</h4>
+                <nav id="tocContent">
+                    <!-- 动态生成 -->
+                </nav>
+            </aside>
+        </main>
+    </div>
+
+    <!-- 搜索模态框 -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <input type="text" id="modalSearchInput" placeholder="搜索文档..." autofocus>
+                <button class="search-close" id="searchClose">×</button>
+            </div>
+            <div class="search-results" id="searchResults">
+                <!-- 搜索结果 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 图片预览模态框 -->
+    <div class="image-modal" id="imageModal">
+        <span class="image-close" id="imageClose">×</span>
+        <img class="image-modal-content" id="modalImage">
+        <div class="image-caption" id="imageCaption"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/javascript.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/css.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/languages/html.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css">
+    <script src="script.js"></script>
+</body>
+</html>

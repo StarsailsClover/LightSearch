@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LightSearch - 简洁优雅的聚合搜索引擎，支持多引擎搜索、学术搜索，零依赖，开箱即用">
+    <meta name="keywords" content="搜索引擎,聚合搜索,学术搜索,LightSearch,开源">
+    <meta name="author" content="Sails">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="LightSearch - 简洁优雅的聚合搜索引擎">
+    <meta property="og:description" content="多引擎聚合，一键触达全网信息">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="../slide_01_cover.png">
+    
+    <title>LightSearch - 简洁优雅的聚合搜索引擎</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="../icon.png" type="image/png">
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="../icon.png" as="image">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <img src="../icon.png" alt="LightSearch Logo" width="28" height="28">
+                <span>LightSearch</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#overview">概览</a></li>
+                <li><a href="#features">特性</a></li>
+                <li><a href="#themes">主题</a></li>
+                <li><a href="../docs/index.html">文档</a></li>
+                <li><a href="#download">下载</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="../index.html" class="btn-primary">立即体验</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero 区域 -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">LightSearch</h1>
+            <p class="hero-subtitle">简洁优雅，搜索无界</p>
+            <p class="hero-description">一个纯净、强大的聚合搜索引擎<br>零依赖，开箱即用</p>
+            <div class="hero-actions">
+                <a href="../index.html" class="btn-hero-primary">开始使用</a>
+                <a href="https://github.com/StarsailsClover/LightSearch" class="btn-hero-secondary" target="_blank" rel="noopener">查看源码</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="../slide_01_cover.png" alt="LightSearch 主界面展示" class="fade-in-up" loading="lazy">
+        </div>
+    </section>
+
+    <!-- 核心特性 -->
+    <section class="section section-dark" id="overview">
+        <div class="container">
+            <h2 class="section-title">为搜索而生</h2>
+            <p class="section-subtitle">多引擎聚合，一键触达全网信息</p>
+            <div class="feature-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon" aria-hidden="true">🔍</div>
+                    <h3>多引擎搜索</h3>
+                    <p>同时搜索 Google、Bing、百度等多个搜索引擎，一次输入，全网覆盖</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon" aria-hidden="true">🎓</div>
+                    <h3>学术搜索</h3>
+                    <p>集成 Google Scholar、PubMed、arXiv 等专业学术资源，助力科研工作</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon" aria-hidden="true">⚡</div>
+                    <h3>零依赖</h3>
+                    <p>纯原生 JavaScript/CSS/HTML 实现，无需任何框架，加载速度极快</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 多引擎展示 -->
+    <section class="section section-light" id="features">
+        <div class="container-wide">
+            <div class="split-content">
+                <div class="split-text fade-in-left">
+                    <h2 class="feature-title">多引擎聚合<br>一次搜索，全网覆盖</h2>
+                    <p class="feature-description">
+                        支持 Google、Bing、百度、DuckDuckGo 等主流搜索引擎。
+                        自定义引擎配置，打造专属搜索体验。
+                    </p>
+                    <ul class="feature-list">
+                        <li>✓ 10+ 内置搜索引擎</li>
+                        <li>✓ 自定义引擎支持</li>
+                        <li>✓ 智能引擎推荐</li>
+                        <li>✓ 一键全选/取消</li>
+                    </ul>
+                </div>
+                <div class="split-image fade-in-right">
+                    <img src="../slide_03_mult-engine.png" alt="多引擎搜索界面" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 学术搜索 -->
+    <section class="section section-dark">
+        <div class="container-wide">
+            <div class="split-content reverse">
+                <div class="split-text fade-in-right">
+                    <h2 class="feature-title">学术搜索<br>专业资源，触手可及</h2>
+                    <p class="feature-description">
+                        集成 Google Scholar、PubMed、IEEE Xplore、arXiv 等权威学术数据库。
+                        支持时间筛选，精准定位最新研究成果。
+                    </p>
+                    <ul class="feature-list">
+                        <li>✓ 8+ 学术数据库</li>
+                        <li>✓ 时间范围筛选</li>
+                        <li>✓ 专业领域覆盖</li>
+                        <li>✓ 快速文献检索</li>
+                    </ul>
+                </div>
+                <div class="split-image fade-in-left">
+                    <img src="../slide_04_academic.png" alt="学术搜索界面" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 主题系统 -->
+    <section class="section section-light" id="themes">
+        <div class="container">
+            <h2 class="section-title">精美主题</h2>
+            <p class="section-subtitle">多款精心设计的主题，满足不同审美需求</p>
+            <div class="theme-grid">
+                <div class="theme-card fade-in">
+                    <img src="../slide_07_themes.png" alt="LightSearch Classic 主题" loading="lazy">
+                    <h3>LightSearch Classic</h3>
+                    <p>简洁明快的经典白色主题</p>
+                </div>
+                <div class="theme-card fade-in">
+                    <img src="../slide_07_themes.png" alt="Classic Dark 主题" loading="lazy">
+                    <h3>Classic Dark</h3>
+                    <p>护眼舒适的深色模式</p>
+                </div>
+                <div class="theme-card fade-in">
+                    <img src="../slide_07_themes.png" alt="Liquid Glass 主题" loading="lazy">
+                    <h3>Liquid Glass</h3>
+                    <p>现代感十足的玻璃态设计</p>
+                </div>
+                <div class="theme-card fade-in">
+                    <img src="../slide_07_themes.png" alt="Eye Comfort 主题" loading="lazy">
+                    <h3>Eye Comfort</h3>
+                    <p>温和柔和的护眼绿主题</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 响应式设计 -->
+    <section class="section section-dark">
+        <div class="container-wide">
+            <div class="split-content">
+                <div class="split-text fade-in-left">
+                    <h2 class="feature-title">响应式设计<br>完美适配各种设备</h2>
+                    <p class="feature-description">
+                        从桌面到移动端，从平板到大屏，LightSearch 都能提供一致且优雅的使用体验。
+                    </p>
+                    <ul class="feature-list">
+                        <li>✓ 桌面端优化</li>
+                        <li>✓ 移动端适配</li>
+                        <li>✓ 平板友好</li>
+                        <li>✓ 触控支持</li>
+                    </ul>
+                </div>
+                <div class="split-image fade-in-right">
+                    <img src="../slide_06_responsive.png" alt="响应式设计展示" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 自定义功能 -->
+    <section class="section section-light">
+        <div class="container-wide">
+            <div class="split-content reverse">
+                <div class="split-text fade-in-right">
+                    <h2 class="feature-title">高度可定制<br>打造专属搜索体验</h2>
+                    <p class="feature-description">
+                        自定义搜索引擎、调整界面布局、选择喜爱主题。
+                        所有设置本地保存，隐私安全有保障。
+                    </p>
+                    <ul class="feature-list">
+                        <li>✓ 自定义搜索引擎</li>
+                        <li>✓ 个性化主题配置</li>
+                        <li>✓ 本地数据存储</li>
+                        <li>✓ 导入/导出设置</li>
+                    </ul>
+                </div>
+                <div class="split-image fade-in-left">
+                    <img src="../slide_08_customization.png" alt="自定义功能界面" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技术栈 -->
+    <section class="section section-dark">
+        <div class="container">
+            <h2 class="section-title">纯净技术栈</h2>
+            <p class="section-subtitle">零依赖，开箱即用</p>
+            <div class="tech-grid">
+                <div class="tech-card fade-in">
+                    <div class="tech-icon" aria-hidden="true">HTML5</div>
+                    <p>语义化标签</p>
+                </div>
+                <div class="tech-card fade-in">
+                    <div class="tech-icon" aria-hidden="true">CSS3</div>
+                    <p>现代布局技术</p>
+                </div>
+                <div class="tech-card fade-in">
+                    <div class="tech-icon" aria-hidden="true">JavaScript</div>
+                    <p>原生 ES6+</p>
+                </div>
+                <div class="tech-card fade-in">
+                    <div class="tech-icon" aria-hidden="true">⚡</div>
+                    <p>零依赖</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 下载/使用 -->
+    <section class="section section-cta" id="download">
+        <div class="container">
+            <h2 class="cta-title">立即开始使用</h2>
+            <p class="cta-subtitle">无需安装，打开即用</p>
+            <div class="cta-actions">
+                <a href="../index.html" class="btn-cta-primary">在线体验</a>
+                <a href="https://github.com/StarsailsClover/LightSearch/archive/refs/heads/main.zip" class="btn-cta-secondary" rel="noopener">下载源码</a>
+            </div>
+            <p class="cta-note">开源免费 · GPL-3.0 许可证</p>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="../icon.png" alt="LightSearch Logo" width="32" height="32">
+                    <span>LightSearch</span>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>产品</h4>
+                        <ul>
+                            <li><a href="#overview">概览</a></li>
+                            <li><a href="#features">特性</a></li>
+                            <li><a href="#themes">主题</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>资源</h4>
+                        <ul>
+                            <li><a href="https://github.com/StarsailsClover/LightSearch" target="_blank" rel="noopener">GitHub</a></li>
+                            <li><a href="https://github.com/StarsailsClover/LightSearch/issues" target="_blank" rel="noopener">反馈问题</a></li>
+                            <li><a href="../README.md">文档</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>关于</h4>
+                        <ul>
+                            <li><a href="https://github.com/StarsailsClover" target="_blank" rel="noopener">开发者</a></li>
+                            <li><a href="../LICENSE">许可证</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 LightSearch. Made with ❤️ by Sails</p>
+                <p>Simple, Elegant, Powerful</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
