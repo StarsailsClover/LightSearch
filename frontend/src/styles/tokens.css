@@ -1,0 +1,159 @@
+/* Material 3 + Apple 设计 token
+   通过 [data-theme="dark"] 切换深浅色
+   通过 [data-accent] 切换强调色 */
+
+:root {
+  /* 字体族：Apple 系统字体优先 */
+  --font-sans: -apple-system, 'SF Pro Display', 'SF Pro Text', 'Segoe UI',
+    system-ui, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', 'Cascadia Code',
+    Consolas, monospace;
+
+  /* 圆角 */
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+
+  /* 间距 4/8/12/16/24/32/48 */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* 字号阶梯 */
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-md: 17px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: 32px;
+
+  /* 行高 */
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.7;
+
+  /* 字重 */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Apple 风格毛玻璃 nav */
+  --nav-blur: saturate(180%) blur(20px);
+
+  /* 过渡 */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.3, 0, 0, 1);
+  --duration-short: 150ms;
+  --duration-medium: 250ms;
+  --duration-long: 400ms;
+}
+
+/* 浅色主题 - Material 3 light */
+:root,
+[data-theme='light'] {
+  --md-surface: #fcfcfc;
+  --md-surface-dim: #dad9dd;
+  --md-surface-bright: #faf8fd;
+  --md-surface-container: #f3f1f6;
+  --md-surface-container-high: #edeaf0;
+  --md-on-surface: #1b1b1f;
+  --md-on-surface-variant: #46464f;
+  --md-primary: #4285f4;
+  --md-on-primary: #ffffff;
+  --md-primary-container: #d8e2ff;
+  --md-on-primary-container: #001a41;
+  --md-secondary: #5c5d72;
+  --md-outline: #767680;
+  --md-outline-variant: #c7c5d0;
+  --md-error: #ea4335;
+  --md-on-error: #ffffff;
+  --md-success: #34a853;
+  --md-scrim: rgba(0, 0, 0, 0.4);
+  --md-divider: rgba(0, 0, 0, 0.08);
+
+  /* 强调色：默认蓝，可被 [data-accent] 覆盖 */
+  --accent: var(--md-primary);
+  --accent-on: var(--md-on-primary);
+
+  color-scheme: light;
+}
+
+/* 深色主题 - Material 3 dark */
+[data-theme='dark'] {
+  --md-surface: #131318;
+  --md-surface-dim: #131318;
+  --md-surface-bright: #39393f;
+  --md-surface-container: #1f1f25;
+  --md-surface-container-high: #2a2a30;
+  --md-on-surface: #e5e1e9;
+  --md-on-surface-variant: #c7c5d0;
+  --md-primary: #adc6ff;
+  --md-on-primary: #002e69;
+  --md-primary-container: #274578;
+  --md-on-primary-container: #d8e2ff;
+  --md-secondary: #c5c4dd;
+  --md-outline: #90909a;
+  --md-outline-variant: #46464f;
+  --md-error: #ff8a80;
+  --md-on-error: #690000;
+  --md-success: #81c995;
+  --md-scrim: rgba(0, 0, 0, 0.6);
+  --md-divider: rgba(255, 255, 255, 0.1);
+
+  --accent: var(--md-primary);
+  --accent-on: var(--md-on-primary);
+
+  color-scheme: dark;
+}
+
+/* 强调色预设 - 通过 [data-accent] 覆盖 --accent */
+[data-accent='blue'] {
+  --accent: #4285f4;
+  --accent-on: #ffffff;
+}
+[data-accent='green'] {
+  --accent: #34a853;
+  --accent-on: #ffffff;
+}
+[data-accent='red'] {
+  --accent: #ea4335;
+  --accent-on: #ffffff;
+}
+[data-accent='yellow'] {
+  --accent: #fbbc04;
+  --accent-on: #1b1b1f;
+}
+[data-accent='purple'] {
+  --accent: #8b5cf6;
+  --accent-on: #ffffff;
+}
+
+/* 深色模式下的强调色微调，保持可读性 */
+[data-theme='dark'][data-accent='blue'] {
+  --accent: #8ab4f8;
+  --accent-on: #0a1228;
+}
+[data-theme='dark'][data-accent='green'] {
+  --accent: #81c995;
+  --accent-on: #0a1f12;
+}
+[data-theme='dark'][data-accent='red'] {
+  --accent: #f28b82;
+  --accent-on: #2a0808;
+}
+[data-theme='dark'][data-accent='yellow'] {
+  --accent: #fdd663;
+  --accent-on: #1b1b1f;
+}
+[data-theme='dark'][data-accent='purple'] {
+  --accent: #b39ddb;
+  --accent-on: #1a0f2e;
+}

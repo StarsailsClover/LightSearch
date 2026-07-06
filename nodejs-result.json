@@ -1,0 +1,30 @@
+{
+  "query": "nodejs streams",
+  "results": [
+    {
+      "engine": "Bing",
+      "engineId": "bing",
+      "title": "Node.js 鈥?Run JavaScript Everywhere",
+      "url": "https://nodejs.org/",
+      "snippet": "Node.js庐 is a free, open-source, cross-platform JavaScript runtime environment that lets developers create servers, web apps, command line tools and scripts.",
+      "score": 0.896
+    },
+    {
+      "engine": "Bing",
+      "engineId": "bing",
+      "title": "Node.js 鈥?璁?JavaScript 鏃犲涓嶅湪 - Node.js 杩愯鐜",
+      "url": "https://node.org.cn/",
+      "snippet": "May 7, 2026鈥偮封€傝 JavaScript 鏃犲涓嶅湪 Node.js庐 鏄竴涓厤璐广€佸紑婧愩€佽法骞冲彴鐨?JavaScript 杩愯鏃剁幆澧冿紝浣垮紑鍙戣€呰兘澶熷垱寤烘湇鍔″櫒銆乄eb 搴旂敤銆佸懡浠よ宸ュ叿鍜岃剼鏈€?,
+      "score": 0.871
+    }
+  ],
+  "timings": [
+    {
+      "engine": "Bing",
+      "ms": 1195,
+      "ok": true
+    }
+  ],
+  "total": 2,
+  "tookMs": 1199
+}
