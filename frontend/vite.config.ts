@@ -4,7 +4,7 @@ import path from 'node:path';
 
 // Vite 配置：React 插件 + /api 代理到后端 8788
 export default defineConfig({
-  base: process.env.GITHUB_PAGES === 'true' ? '/LightSearch/' : '/',
+  base: process.env.GITHUB_PAGES === 'true' ? (process.env.GITHUB_PAGES_BASE || '/LightSearch/') : '/',
   plugins: [react()],
   resolve: {
     alias: {
