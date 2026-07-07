@@ -1,0 +1,15 @@
+# Render Blueprint: LightSearch API
+# 推送到 main 分支后，在 Render 控制台使用 New > Blueprint 创建服务
+services:
+  - type: web
+    name: lightsearch-api
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm ci && npm run build -w backend
+    startCommand: node backend/dist/backend/src/index.js
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production

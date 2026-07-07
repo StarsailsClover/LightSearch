@@ -5,8 +5,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import { SettingsProvider, useSettings } from './stores/settings';
 import { I18nProvider } from './i18n';
-import './styles/tokens.css';
-import './styles/global.css';
+import './styles.css';
 
 // 内层：从 settings store 读取持久化的语言，注入 I18nProvider
 function Root() {

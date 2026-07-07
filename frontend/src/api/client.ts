@@ -10,8 +10,27 @@ import type {
   AppConfig,
 } from './types';
 
-// 基础路径：默认走同源 /api（由 Vite 代理），生产环境可由 VITE_API_BASE 覆盖
-const API_BASE = import.meta.env.VITE_API_BASE ?? '';
+// 基础路径：优先 localStorage 运行时配置（用户可在设置里填），其次 VITE_API_BASE，最后同源
+function resolveApiBase(): string {
+  if (typeof localStorage !== 'undefined') {
+    const stored = localStorage.getItem('ls:apiBase');
+    if (stored) return stored;
+  }
+  return import.meta.env.VITE_API_BASE ?? '';
+}
+export const API_BASE = resolveApiBase();
+
+// 运行时更新后端地址（写入 localStorage 后刷新页面使所有模块重新读取）
+export function setApiBase(base: string): void {
+  if (typeof localStorage !== 'undefined') {
+    if (base) localStorage.setItem('ls:apiBase', base);
+    else localStorage.removeItem('ls:apiBase');
+  }
+  if (typeof window !== 'undefined') window.location.reload();
+}
+export function getApiBase(): string {
+  return API_BASE;
+}
 
 // 统一请求错误
 export class ApiError extends Error {
