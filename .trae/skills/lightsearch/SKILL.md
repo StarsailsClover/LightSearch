@@ -1,109 +1,74 @@
 ---
-name: "lightsearch"
-description: "Aggregates search results across multiple engines (Google/Bing/Baidu/DuckDuckGo/Wikipedia/arXiv/PubMed) via the LightSearch backend. Invoke when the agent needs web search, academic literature lookup, or cross-engine aggregated information retrieval with deduplication and relevance scoring."
+name: "LightSearch"
+description: "Aggregates web, academic, news, image, and knowledge search via LightSearch API. Invoke when users need current, multi-engine search evidence."
 ---
 
-# LightSearch Skill
+# LightSearch
 
-LightSearch gives the agent a single-entry search aggregator: one query is fanned out to multiple search engines in parallel, results are deduplicated by URL, scored by engine weight + position + length, and returned as a sorted list. This is far more efficient than calling WebSearch repeatedly for different engines, and yields academic + web coverage in one call.
+Use this skill when a task needs current external information, source discovery, or cross-engine evidence aggregation through a deployed LightSearch API.
 
-## When to invoke
+## When To Invoke
 
-- The agent needs to look up factual information that benefits from multiple sources (e.g. comparing answers across engines).
-- The agent needs academic literature (arXiv, PubMed, Google Scholar) — pass `--engines arxiv,pubmed`.
-- The agent needs both web + academic coverage in a single tool call rather than several.
-- The user explicitly asks for "aggregated search", "search multiple engines", "LightSearch", or "聚合搜索".
+- The user asks for web search, literature search, current facts, citations, or source-backed answers.
+- The task benefits from aggregated results across engines instead of relying on one search provider.
+- The user asks an Agent to search using LightSearch or mentions LightSearch as the search backend.
+- You need to compare general web sources with academic or knowledge sources.
 
-Do **not** invoke when:
-- A single WebSearch is sufficient (LightSearch has more latency).
-- The query needs images/videos — LightSearch currently returns web/academic text results only.
-- The backend is known to be down and a quick fallback is required (use WebSearch instead).
+## API Contract
 
-## Prerequisites
+LightSearch exposes an OpenAPI-like JSON API:
 
-The LightSearch backend must be running on `http://localhost:8788`. To start it:
+- `GET {LIGHTSEARCH_API_BASE}/api/health` checks service availability.
+- `GET {LIGHTSEARCH_API_BASE}/api/engines` returns available built-in engine identifiers.
+- `POST {LIGHTSEARCH_API_BASE}/api/search` runs aggregated search.
+
+Search request body:
+
+```json
+{
+  "query": "search terms",
+  "engines": ["google", "bing", "wikipedia"],
+  "timeRange": "any",
+  "limit": 10
+}
+```
+
+Supported `timeRange` values are `any`, `1w`, `1m`, `1y`, `5y`, and `10y`.
+
+## Backend Base URL
+
+Resolve the API base URL in this order:
+
+1. User-provided backend URL in the current conversation.
+2. Environment variable `LIGHTSEARCH_API_BASE` if available.
+3. The deployed Render URL configured for this project.
+
+Do not call the GitHub Pages frontend as the API server. GitHub Pages only hosts the static UI.
+
+## Search Workflow
+
+1. Check `/api/health` before the first search when the backend URL is uncertain.
+2. Fetch `/api/engines` when you do not know which engine ids are available.
+3. Choose engines based on intent:
+   - General web: `google`, `bing`, `duckduckgo`, `wikipedia`.
+   - Academic: `arxiv`, `pubmed`, `wikipedia`, plus any configured scholar engines.
+   - Broad discovery: combine web and knowledge engines, then deduplicate by URL/domain.
+4. Call `/api/search` with a concise query and a practical `limit` such as 10–20.
+5. Synthesize findings using titles, snippets, URLs, engine names, and metadata.
+6. Clearly distinguish retrieved facts from your own reasoning.
+
+## Output Guidance
+
+- Cite important sources with their URLs.
+- Mention failed engines only if failures materially affect confidence.
+- Prefer concise summaries with grouped findings over dumping raw results.
+- For conflicting information, compare source quality, recency, and corroboration.
+- Never expose API keys or user-provided secrets in logs or answers.
+
+## Example
 
 ```bash
-cd backend
-npm install      # first time only
-npm run dev
+curl -s "$LIGHTSEARCH_API_BASE/api/search" \
+  -H "Content-Type: application/json" \
+  -d '{"query":"site reliability error budgets","engines":["google","bing","wikipedia"],"timeRange":"1y","limit":10}'
 ```
-
-If the backend is not running, the script will print a clear error. Fall back to the `WebSearch` tool in that case, or ask the user whether to start the backend.
-
-## Usage
-
-```bash
-node .trae/skills/lightsearch/search.js "<query>" [options]
-```
-
-### Options
-
-| Flag | Default | Description |
-|------|---------|-------------|
-| `--engines <csv>` | `bing,duckduckgo,wikipedia` | Comma-separated engine IDs. Available: `google`, `bing`, `baidu`, `duckduckgo`, `wikipedia`, `arxiv`, `pubmed`. Add `searxng` if configured. |
-| `--limit <n>` | `5` | Max results per engine (1-10). |
-| `--time <range>` | `any` | Time filter: `any`, `1w`, `1m`, `1y`, `5y`, `10y`. Only affects academic engines that expose publish dates. |
-| `--json` | off | Output raw JSON (machine-readable). Default is human-readable formatted text. |
-| `--api <url>` | `http://localhost:8788` | Override backend URL (e.g. when tunneled to a remote host). |
-
-### Examples
-
-```bash
-# Quick web lookup (default engines)
-node .trae/skills/lightsearch/search.js "what is rag in llm"
-
-# Academic search
-node .trae/skills/lightsearch/search.js "transformer architecture" --engines arxiv,pubmed --limit 8
-
-# Full coverage
-node .trae/skills/lightsearch/search.js "rust async runtime comparison" --engines bing,duckduckgo,wikipedia,arxiv --limit 5
-
-# Machine-readable output for further agent processing
-node .trae/skills/lightsearch/search.js "openai compatible api" --json
-```
-
-## Output format (default)
-
-```
-Found 23 results from 3 engines in 1842ms
-
-[1] Transformer architecture: a survey
-    https://arxiv.org/abs/2106.04554
-    engine: arxiv · 2023-04-12 · Vaswani et al.
-    We introduce the Transformer, a new architecture...
-
-[2] Understanding Transformers
-    https://example.com/article
-    engine: bing
-    Transformers have revolutionized NLP...
-```
-
-Use `--json` to get the raw `SearchResponse` payload (see `shared/types.ts`).
-
-## Interpreting results
-
-- **engine field**: which engine produced this result.
-- **score field**: aggregated relevance score (0-1). Higher is better.
-- **meta.publishedAt / authors / citations / pdfUrl**: present for academic results.
-- Failed engines appear in `timings` with `ok: false` and an `error` string — the script surfaces these at the bottom so the agent knows coverage was partial.
-
-## Workflow integration
-
-Recommended pattern when invoked:
-
-1. Run the script with `--json` first to get structured data.
-2. If the agent needs deeper analysis (summarize, compare sources), it can call the user's OpenAI-compatible model through the same backend's `/api/ai/chat` endpoint — but for typical skill usage, in-prompt reasoning over the returned snippets is sufficient.
-3. Cite sources by including the URL when using a fact in the answer.
-
-## Troubleshooting
-
-- **`ECONNREFUSED`**: backend is not running. Start it with `cd backend && npm run dev`.
-- **All engines fail with timeout**: network issue or all engines blocking the host. Try fewer engines or `--limit 3`.
-- **Google returns empty**: Google frequently serves a consent/anti-bot page. Use `bing` and `duckduckgo` as more reliable defaults.
-- **arXiv/PubMed return empty for non-academic queries**: these engines only match academic content. Combine with web engines.
-
-## Files
-
-- `SKILL.md` — this file.
-- `search.js` — Node.js script, zero dependencies (Node 18+ built-in fetch).
